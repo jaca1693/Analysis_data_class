@@ -12,8 +12,9 @@ This section ensures all required libraries are installed and imports them. It t
 !pip install scipy
 !pip install ISLP
 !pip install torchinfo
-
-### 1.2 Library Imports and Configuration
+```
+### 1.2 Dependencies Installation
+```python
 # Import core data analysis and visualization libraries
 import pandas as pd
 import numpy as np
@@ -44,3 +45,23 @@ from pytorch_lightning import seed_everything # Used for reproducibility
 # Set seed for reproducibility for PyTorch
 seed_everything(42, workers=True)
 torch.use_deterministic_algorithms(True, warn_only=True)
+```
+### 1.3 Data Merging
+```python
+# Define search pattern to find all CSV files recursively in subdirectories
+search_pattern = os.path.join('**', '*.csv')
+csv_files = glob.glob(search_pattern, recursive=True)
+
+print("Found CSV files:")
+print(csv_files)
+
+# Merge the first four CSV files into a single DataFrame
+df_merged = pd.DataFrame()
+for i in range(4):
+    try:
+        current_df = pd.read_csv(csv_files[i], sep=";")
+        df_merged = pd.concat([df_merged, current_df], ignore_index=True)
+    except IndexError:
+        print(f"Warning: Only found {len(csv_files)} files. Stopping at index {i}.")
+        break
+```
