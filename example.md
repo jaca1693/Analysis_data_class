@@ -1,73 +1,80 @@
 # Detailed Statistical and Machine Learning Analysis
+**Authors:** Mateo H. Sanchez, Jose A. Calvetty, Milena R. de Sousa
 
-This document presents the complete source code used for the final project, organized into logical sections for clarity and professional review.
+**Dataset:** [Generated Datasets for Burst Detection in Water Distribution Systems](https://github.com/ArieleZanfei/generated-datasets-for-burst-detection-in-water-distribution-systems)
+
+This document presents the complete source code used for the final project, organized into logical sections for clarity and professional review, designed to be executed in a Colab/Jupyter environment.
 
 ## 1. Environment Setup and Data Loading
 
-This section ensures all required libraries are installed and imports them. It then loads and merges the initial datasets from the specified GitHub repository.
-
-### 1.1 Dependencies Installation
+### 1.1 Dependencies Installation and Core Imports
 ```python
-# Install necessary libraries
 !pip install scipy
-!pip install ISLP
-!pip install torchinfo
-```
-### 1.2 Library Imports and Configuration
-```python
 # Import core data analysis and visualization libraries
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 import seaborn as sns
+
 import glob
 import os
-
+```
+### 1.2 Library Imports and Configuration
+All core, machine learning, and deep learning libraries are imported here.
+```python
 # Import Machine Learning libraries
+import sklearn as skl
 import sklearn.model_selection as skm
 from ISLP import load_data, confusion_table
 from ISLP.models import ModelSpec as MS
 from sklearn.tree import (DecisionTreeClassifier as DTC,
+                          DecisionTreeRegressor as DTR, # Incluida de tu código
                           plot_tree,
                           export_text)
 from sklearn.metrics import (accuracy_score,
                              log_loss)
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import (RandomForestRegressor as RF, # Incluida de tu código
+                              GradientBoostingRegressor as GBR) # Incluida de tu código
+from ISLP.bart import BART # Incluida de tu código
+from sklearn.model_selection import train_test_split # Importación explícita
 
 # Import PyTorch and Deep Learning utilities
 import torch
 from torch import nn
+from torch.optim import RMSprop
 from torch.utils.data import TensorDataset, DataLoader
+from torchmetrics import (MeanAbsoluteError, R2Score)
+from torchinfo import summary
+from pytorch_lightning import Trainer
+from pytorch_lightning.loggers import CSVLogger
 from pytorch_lightning import seed_everything # Used for reproducibility
 
-# Set seed for reproducibility for PyTorch
+# Set seed for reproducibility for PyTorch and Scikit-learn
 seed_everything(42, workers=True)
 torch.use_deterministic_algorithms(True, warn_only=True)
 ```
-### 1.3 Data Merging
+### 1.3 Data Loading and Merging
+The initial datasets are loaded and merged into a single DataFrame (df_merged).
 ```python
 # Define search pattern to find all CSV files recursively in subdirectories
 search_pattern = os.path.join('**', '*.csv')
 csv_files = glob.glob(search_pattern, recursive=True)
 
-print("Found CSV files:")
 print(csv_files)
 
 # Merge the first four CSV files into a single DataFrame
 df_merged = pd.DataFrame()
 for i in range(4):
-    try:
-        current_df = pd.read_csv(csv_files[i], sep=";")
-        df_merged = pd.concat([df_merged, current_df], ignore_index=True)
-    except IndexError:
-        print(f"Warning: Only found {len(csv_files)} files. Stopping at index {i}.")
-        break
+    current_df = pd.read_csv(csv_files[i],sep=";")
+    df_merged = pd.concat([df_merged, current_df], ignore_index=True)
 ```
 ## 2. Exploratory Data Analysis (EDA) and Statistical Tests
 This part performs descriptive statistics, visualizes distributions, and conducts various parametric and non-parametric hypothesis tests on the sensor data.
 ### 2.1 Descrtiptive Statistics
+Calculation of central tendency, dispersion, and shape measures for all sensor columns.
 ```python
 # Create a copy for statistical analysis, dropping target and index columns
 df_analy = df_merged.copy()
@@ -96,7 +103,8 @@ kurtosis = pd.DataFrame(kurtosis.values.reshape(1, -1), columns=df_analy.columns
 df_stats = pd.concat([df_stats, mode, var, std, sem, skew, kurtosis])
 display(df_stats)
 ```
-### 2.2 T-tests and ANOVA (Parametric Comparisons)
+### 2.2 Parametric Tests (T-tests and ANOVA)
+Performing independent t-tests for pairwise comparisons and ANOVA for multiple group comparisons.
 ```python
 # Define lists of 'flow_meter' and 'press' column names
 flow_meter_cols = [col for col in df_analy.columns if 'flow_meter' in col]
@@ -123,18 +131,31 @@ print(f"ANOVA test for 'flow_meter' columns: F-statistic: {anova_flow_meters.sta
 anova_presses = stats.f_oneway(*press_groups)
 print(f"ANOVA test for 'press' columns: F-statistic: {anova_presses.statistic}, P-value: {anova_presses.pvalue}")
 ```
-### 2.3 Non-Parametric Tests (Kruskal-Wallis and Mann-Whitney U)
+### 2.3 Non-Parametric Tests (Normality, Homogeneity, Kruskal-Wallis)
+Checking the assumptions for parametric tests and using Kruskal-Wallis as an alternative.
 ```python
 print("\n--- Normality and Homogeneity Checks (Shapiro-Wilk and Levene) ---")
 # Check normality for 'flow_meter' columns
+print("Normality test (Shapiro-Wilk) for 'flow_meter' columns:")
 for col in flow_meter_cols:
     shapiro_test = stats.shapiro(df_analy[col])
     print(f"Shapiro-Wilk test for {col}: {shapiro_test}")
 
+# Check normality for 'press' columns
+print("\nNormality test (Shapiro-Wilk) for 'press' columns:")
+for col in press_cols:
+    shapiro_test = stats.shapiro(df_analy[col])
+    print(f"Shapiro-Wilk test for {col}: {shapiro_test}")
+
 # Check homogeneity of variances for 'flow_meter' columns
+print("\nHomogeneity of variances test (Levene) for 'flow_meter' columns:")
 levene_flow_meters = stats.levene(*flow_meter_groups)
 print(f"Levene test for 'flow_meter' columns: {levene_flow_meters}")
 
+# Check homogeneity of variances for 'press' columns
+print("\nHomogeneity of variances test (Levene) for 'press' columns:")
+levene_presses = stats.levene(*press_groups)
+print(f"Levene test for 'press' columns: {levene_presses}")
 
 print("\n--- Kruskal-Wallis H-test ---")
 # Perform Kruskal-Wallis test on 'flow_meter' columns
@@ -144,8 +165,21 @@ print(f"Kruskal-Wallis test for 'flow_meter' columns: Statistic: {kruskal_flow_m
 # Perform Kruskal-Wallis test on 'press' columns
 kruskal_presses = stats.kruskal(*press_groups)
 print(f"Kruskal-Wallis test for 'press' columns: Statistic: {kruskal_presses.statistic}, P-value: {kruskal_presses.pvalue}")
+```
+### 2.4 Non-parametric Tests (Mann-Whitney U)
+Using Mann-Whitney U tests for pairwise comparisons when Kruskal-Wallis is significant.
+```python
+# Perform Mann-Whitney U tests between pairs of 'flow_meter' columns
+print("\nMann-Whitney U tests between pairs of 'flow_meter' columns:")
+for i in range(len(flow_meter_cols)):
+    for j in range(i + 1, len(flow_meter_cols)):
+        col1 = flow_meter_cols[i]
+        col2 = flow_meter_cols[j]
+        mannwhitneyu_result = stats.mannwhitneyu(df_analy[col1], df_analy[col2])
+        print(f"Mann-Whitney U test between {col1} and {col2}: {mannwhitneyu_result}")
 
-print("\n--- Mann-Whitney U tests between pairs of 'press' columns ---")
+# Perform Mann-Whitney U tests between pairs of 'press' columns
+print("\nMann-Whitney U tests between pairs of 'press' columns:")
 for i in range(len(press_cols)):
     for j in range(i + 1, len(press_cols)):
         col1 = press_cols[i]
@@ -153,21 +187,22 @@ for i in range(len(press_cols)):
         mannwhitneyu_result = stats.mannwhitneyu(df_analy[col1], df_analy[col2])
         print(f"Mann-Whitney U test between {col1} and {col2}: {mannwhitneyu_result}")
 ```
-### 2.4 Correlation and Distribution Analysis
+### 2.5 Correlation and Distribution Analysis
+Calculating and visualizing the Pearson and Spearman correlation matrices, and the probability distributions.
 ```python
 # Calculate and visualize the Pearson correlation matrix
 correlation_matrix = df_analy.corr()
 plt.figure(figsize=(12, 10))
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
 plt.title('Pearson Correlation Matrix of DataFrame Columns')
-plt.show() # NOTE: Must save this figure to /visualizations folder for GitHub display.
+plt.show()
 
 # Calculate and visualize the Spearman correlation matrix
 spearman_correlation_matrix = df_analy.corr(method='spearman')
 plt.figure(figsize=(12, 10))
 sns.heatmap(spearman_correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
 plt.title('Spearman Correlation Matrix of DataFrame Columns')
-plt.show() # NOTE: Must save this figure to /visualizations folder for GitHub display.
+plt.show()
 
 # Visualize the probability distribution of each column (Histograms)
 for col in df_analy.columns:
@@ -176,11 +211,23 @@ for col in df_analy.columns:
     plt.title(f'Distribution of {col}')
     plt.xlabel(col)
     plt.ylabel('Frequency')
-    plt.show() # NOTE: Must save these figures to /visualizations folder for GitHub display.
+    plt.show()
 ```
+## Summary:
+
+### Key Findings
+
+* Independent t-tests between pairs of 'flow_meter' columns and pairs of 'press' columns showed statistically significant differences between the means of most column pairs, with many p-values close to 0.
+* ANOVA tests for both 'flow_meter' and 'press' columns resulted in high F-statistics and p-values of 0.0, indicating statistically significant differences in the means among the groups within each category.
+* Assumptions for ANOVA (normality and homogeneity of variances) were violated for both 'flow_meter' and 'press' columns based on Shapiro-Wilk tests (low p-values) and Levene's tests (p-values of 0.0).
+* Kruskal-Wallis tests, used as non-parametric alternatives due to ANOVA assumption violations, produced large test statistics and p-values of 0.0 for both 'flow_meter' and 'press' columns, confirming statistically significant differences in median values among the groups.
+* A correlation matrix was calculated and visualized, showing the pairwise correlations between all columns in the DataFrame.
+* Histograms with kernel density estimates were generated for each column, providing a visual representation of their probability distributions.
+
 ## 3 Machine Learning Classification Models
 This section implements and evaluates three different classification approaches to predict the burst target variable.
 ### 3.1 Decision Tree Classification (DTC)
+Implementation, evaluation, and pruning of a Decision Tree Classifier.
 ```python
 # Prepare data for modeling
 model = MS(df_merged.columns.drop(['index','burst']), intercept=False)
@@ -202,15 +249,49 @@ y_test) = skm.train_test_split(X,
 classificador = DTC(criterion='entropy',
                     max_depth=3,
                     random_state=0)
+
+print(f"X shape: {X.shape}")
+print(f"y_train shape: {y_train.shape}")
+
 classificador.fit(X_train, y_train)
 
-# Cost-Complexity Pruning (CCP) and Cross-Validation
+# Evaluation metrics
+print(f"Initial Test Accuracy: {accuracy_score(y_test, classificador.predict(X_test))}")
+resid_dev = np.sum(log_loss(y_test, classificador.predict_proba(X_test)))
+print(f"Initial Log Loss: {resid_dev}")
+
+# Visualize the initial tree
+plt.figure(figsize=(12,12))
+plot_tree(classificador,
+          feature_names=feature_names,
+          filled=True)
+plt.title("Initial Decision Tree (Max Depth 3)")
+plt.show()
+
+# Print text representation
+print("\n--- Initial Decision Tree Text Summary ---")
+print(export_text(classificador,
+                  feature_names=feature_names,
+                  show_weights=True))
+
+# Cross-Validation
+validation = skm.ShuffleSplit(n_splits=4,
+                              test_size=100,
+                              random_state=0)
+results = skm.cross_validate(classificador,
+                             X_train,
+                             y_train,
+                             cv=validation)
+print(f"\nCross-Validation Scores: {results['test_score']}")
+
+# Confusion matrix 
+confusion_matrix = confusion_table(classificador.predict(X),df_merged['burst'])
+print(confusion_matrix)
+
+# Cost-Complexity Pruning (CCP) and Grid Search
 clf = DTC(criterion='entropy', random_state=0)
-clf.fit(X_train, y_train)
 ccp_path = classificador.cost_complexity_pruning_path(X_train, y_train)
-kfold = skm.KFold(10,
-                  random_state=1,
-                  shuffle=True)
+kfold = skm.KFold(10, random_state=1, shuffle=True)
 
 grid = skm.GridSearchCV(clf,
                         {'ccp_alpha': ccp_path.ccp_alphas},
@@ -218,7 +299,7 @@ grid = skm.GridSearchCV(clf,
                         cv=kfold,
                         scoring='accuracy')
 grid.fit(X_train, y_train)
-grid.best_score_
+print(grid.best_score_)
 
 # Visualize the Pruned Decision Tree
 ax = subplots(figsize=(12, 12))[1]
@@ -226,16 +307,18 @@ best_ = grid.best_estimator_
 plot_tree(best_,
           feature_names=feature_names,
           ax=ax);
-plt.show() # NOTE: Must save this figure to /visualizations folder for GitHub display.
 
 # Final evaluation of the best (pruned) tree
+print(best_.tree_.n_leaves)
+
 print(accuracy_score(y_test,
-                     best_.predict(X_test)))
+                      best_.predict(X_test)))
 confusion = confusion_table(best_.predict(X_test),
                             y_test)
 print(confusion)
 ```
 ### 3.2 Naive Bayes Classification (Gaussian)
+Implementation and evaluation of the Gaussian Naive Bayes model.
 ```python
 # Data split (random_state=0)
 (X_train,
