@@ -13,7 +13,7 @@ This section ensures all required libraries are installed and imports them. It t
 !pip install ISLP
 !pip install torchinfo
 ```
-### 1.2 Dependencies Installation
+### 1.2 Library Imports and Configuration
 ```python
 # Import core data analysis and visualization libraries
 import pandas as pd
