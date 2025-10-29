@@ -546,6 +546,20 @@ Accuracy Score (clf - Unpruned Tree)
 Best Cross-Validation Score (After Pruning)
 0.9723886884040699
 ```
+![Texto Alternativo](images/pruned_decision_tree.png)
+```text
+Number of Leaves (Complexity)
+286
+
+Final Test Accuracy (Pruned Tree)
+0.9732210806697108
+
+Confusion Matrix (Pruned Tree - Test Set)
+Truth      0.0  1.0
+Predicted          
+0.0      39564  915
+1.0        211  358
+```
 ### 3.2 Naive Bayes Classification (Gaussian)
 Implementation and evaluation of the Gaussian Naive Bayes model.
 ```python
