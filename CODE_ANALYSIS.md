@@ -506,6 +506,46 @@ Initial Test Accuracy:
 Residual Deviance (Log Loss):
 0.19974997711808481
 ```
+Initial Desicion Tree Visualization
+![Texto Alternativo](images/initial_decision_tree.png)
+```text
+Decision Tree Logic (Text Export)
+|--- flow_meter3 <= 29.26
+|   |--- 139_press <= 33.11
+|   |   |--- weights: [0.00, 101.00] class: 1.0
+|   |--- 139_press >  33.11
+|   |   |--- flow_meter1 <= 19.54
+|   |   |   |--- weights: [13341.00, 105.00] class: 0.0
+|   |   |--- flow_meter1 >  19.54
+|   |   |   |--- weights: [1.00, 43.00] class: 1.0
+|--- flow_meter3 >  29.26
+|   |--- flow_meter2 <= 14.81
+|   |   |--- 12_press <= 34.46
+|   |   |   |--- weights: [4.00, 4.00] class: 0.0
+|   |   |--- 12_press >  34.46
+|   |   |   |--- weights: [0.00, 165.00] class: 1.0
+|   |--- flow_meter2 >  14.81
+|   |   |--- flow_meter1 <= 18.73
+|   |   |   |--- weights: [1.00, 65.00] class: 1.0
+|   |   |--- flow_meter1 >  18.73
+|   |   |   |--- weights: [79289.00, 4993.00] class: 0.0
+```
+```text
+Initial Cross-Validation Scores
+array([0.93, 0.94, 0.92, 0.92])
+
+Confusion MAtrix (Full Dataset)
+Truth         0.0   1.0
+Predicted              
+0.0        132406  7250
+1.0             5   499
+
+Accuracy Score (clf - Unpruned Tree)
+0.9732448630136986
+
+Best Cross-Validation Score (After Pruning)
+0.9723886884040699
+```
 ### 3.2 Naive Bayes Classification (Gaussian)
 Implementation and evaluation of the Gaussian Naive Bayes model.
 ```python
