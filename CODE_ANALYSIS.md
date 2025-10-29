@@ -496,12 +496,14 @@ confusion = confusion_table(best_.predict(X_test),
 print(confusion)
 ```
 ```text
-- Data Shape after Splitting:
+Data Shape after Splitting:
 (140160, 14)
 (98112,)
-- Initial Test Accuracy:
+
+Initial Test Accuracy:
 0.9488441780821918
-- Residual Deviance (Log Loss):
+
+Residual Deviance (Log Loss):
 0.19974997711808481
 ```
 ### 3.2 Naive Bayes Classification (Gaussian)
