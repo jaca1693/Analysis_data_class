@@ -44,6 +44,7 @@ from sklearn.model_selection import train_test_split # Importación explícita
 # Import PyTorch and Deep Learning utilities
 import torch
 from torch import nn
+import torch.nn as nn
 from torch.optim import RMSprop
 from torch.utils.data import TensorDataset, DataLoader
 from torchmetrics import (MeanAbsoluteError, R2Score)
@@ -320,36 +321,68 @@ print(confusion)
 ### 3.2 Naive Bayes Classification (Gaussian)
 Implementation and evaluation of the Gaussian Naive Bayes model.
 ```python
+model = MS(df_merged.columns.drop(['index','burst']), intercept=False)
+D = model.fit_transform(df_merged) # Process features with ModelSpec
+feature_names = list(D.columns)
+X = np.asarray(D)
 # Data split (random_state=0)
 (X_train,
 X_test,
 y_train,
 y_test) = skm.train_test_split(X,
-                               df_merged['burst'],
-                               test_size=0.3,
-                               random_state=0)
+df_merged['burst'],
+test_size=0.3,
+random_state=0) # Note: Split uses a different random_state than DTC section
 
 gnb = GaussianNB()
 model_gnb = gnb.fit(X_train, y_train)
 
 # Inspect parameters and make predictions
-display(model_gnb.classes_)
-display(model_gnb.class_prior_)
-y_pred = model_gnb.predict(X_test)
+display(model_gnb.classes_) # Display classes
+
+display(model_gnb.class_prior_) # Display prior probabilities
+
+display(model_gnb.theta_) # Display feature means (parameters)
+display(model_gnb.var_) # Display feature variances (parameters)
+
+display(X_train[y_train == 0].mean(axis=0)) # Mean value for Class 0 features
+display(X_train[y_train == 0].var(ddof=0, axis=0)) # Variance value for Class 0 features
+
+y_pred = model_gnb.predict(X_test) # Predicted values
 
 print(accuracy_score(y_test,
                      y_pred))
-display(confusion_table(y_pred, y_test))
+display(confusion_table(y_pred, y_test)) # Confusion table
+# Print the number of mislabeled points out of a total
+miss_points = (X_test.shape[0], (y_test != y_pred).sum())
+print("Mislabeled points out of a total %d points : %d" % miss_points)
+
+y_pred_prob = model_gnb.predict_proba(X_test)[:10]
+display(y_pred_prob) # Probability that each observation belongs to a particular class
 ```
 ### 3.3 Neural Networks (Scikit-learn MLP Classifier)
 ```python
-# Convert NumPy arrays to PyTorch tensors for unified handling
+# Convert NumPy arrays to PyTorch tensors
 X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
-y_train_tensor_mlp = y_train.values # 1D numpy array for Scikit-learn fit
+y_train_tensor = torch.tensor(y_train.values, dtype=torch.float32).unsqueeze(1) # Add an extra dimension for binary output
 X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
-y_test_tensor_mlp = y_test.values
+y_test_tensor = torch.tensor(y_test.values, dtype=torch.float32).unsqueeze(1) # Add an extra dimension for binary output
 
-# Initialize the Scikit-learn MLP Classifier
+# Create TensorDataset
+train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
+test_dataset = TensorDataset(X_test_tensor, y_test_tensor)
+
+# Create DataLoader
+batch_size = 64 # You can adjust this batch size
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+print("Data prepared for PyTorch model.")
+
+print(X_train_tensor.shape)
+
+
+# model
 MLPmodel = MLPClassifier(solver='sgd',
                          learning_rate_init=1e-4,
                          max_iter=100,
@@ -358,44 +391,106 @@ MLPmodel = MLPClassifier(solver='sgd',
                          hidden_layer_sizes=(100,100),
                          alpha=1e-4,
                          random_state=42)
+# training process
+MLPmodel.fit(X_train_tensor,y_train_tensor.ravel()) # Use ravel() to flatten y_train for MLPClassifier
 
-# Training process
-MLPmodel.fit(X_train_tensor, y_train_tensor_mlp)
-
-# Prediction and Evaluation
+# prediction
 y_predict = MLPmodel.predict(X_test_tensor)
-print(MLPmodel.score(X_test_tensor,y_test_tensor_mlp))
-print(accuracy_score(y_test_tensor_mlp, y_predict))
+
+# print(f'Model Coefficients: {MLPmodel.coefs_}') # Coefficients (commented out in original)
+
+# print(f'Model Biases: {MLPmodel.intercepts_}') # Biases (commented out in original)
+
+# predict probability
+prob = MLPmodel.predict_proba(X_test_tensor)
+
+print(f'Model Probabilities (first 5):\n{prob[:5]}')
+
+print(MLPmodel.score(X_test_tensor,y_test_tensor.ravel()))
+
+print(accuracy_score(y_test_tensor,
+                     y_predict))
+display(confusion_table(y_predict, y_test_tensor.ravel())) # Confusion table
+
+sns.heatmap(confusion_table(y_predict, y_test_tensor.ravel()),
+        annot=True,cmap = 'RdYlBu')
+plt.show()
 ```
 3.4 PyTorch Custom CNN-LSTM Model
 ```python
-# Data preparation for PyTorch (using LongTensor for CrossEntropyLoss)
+# Convert NumPy arrays to PyTorch tensors
 X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
-y_train_tensor = torch.tensor(y_train.values, dtype=torch.long)
+y_train_tensor = torch.tensor(y_train.values, dtype=torch.long) # Use dtype=torch.long for CrossEntropyLoss
 X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
-y_test_tensor = torch.tensor(y_test.values, dtype=torch.long)
+y_test_tensor = torch.tensor(y_test.values, dtype=torch.long) # Use dtype=torch.long for CrossEntropyLoss
 
-# Define the custom CNN-LSTM model class (only structure is included here for brevity)
+# Create TensorDataset
+train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
+test_dataset = TensorDataset(X_test_tensor, y_test_tensor)
+
+# Create DataLoader
+batch_size = 64 # You can adjust this batch size
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+print("Data prepared for PyTorch model.")
+
 class LeakDetectionModel(nn.Module):
-    # __init__ and forward methods as defined in the original code...
-    def __init__(self, input_dim=14, window_size=60, cnn_channels=[32, 64],
-                 lstm_hidden=128, lstm_layers=2, dropout=0.3, num_classes=2):
+    def __init__(self,
+                 input_dim=14,        # Number of features
+                 window_size=60,      # Timesteps per sample (Sequence Length)
+                 cnn_channels=[32, 64],
+                 lstm_hidden=128,
+                 lstm_layers=2,
+                 dropout=0.3,
+                 num_classes=2):      # 2 classes: no burst / burst
         super().__init__()
-        # ... (implementation)
-        # Placeholder for brevity, the full class definition is required for execution.
+
+        cnn_layers = []
+        in_channels = input_dim
+
+        # Automatic Convolutional Blocks
+        for out_channels in cnn_channels:
+            cnn_layers.append(nn.Conv1d(in_channels, out_channels, kernel_size=3, padding=1))
+            cnn_layers.append(nn.BatchNorm1d(out_channels))
+            cnn_layers.append(nn.ReLU())
+            cnn_layers.append(nn.Dropout(dropout))
+            in_channels = out_channels
+
+        self.cnn = nn.Sequential(*cnn_layers)
+
+        # LSTM for CNN-processed sequence
+        self.lstm = nn.LSTM(input_size=cnn_channels[-1],
+                             hidden_size=lstm_hidden,
+                             num_layers=lstm_layers,
+                             batch_first=True,
+                             dropout=dropout)
+
+        # Final Classifier
+        self.fc = nn.Sequential(
+            nn.Linear(lstm_hidden, 64),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(64, num_classes)
+        )
 
     def forward(self, x):
-        # ... (implementation)
-        # Placeholder for brevity, the full forward method is required for execution.
-        return self.fc(torch.zeros((x.shape[0], 128))) # Simplified return for structure
+        # Expected Input: (batch, seq_len, features)
+        # If input is 2D (batch, features), add seq_len dimension
+        if x.dim() == 2:
+            x = x.unsqueeze(1) # (batch, 1, features)
 
-# Initialize the custom PyTorch model (using the actual structure)
-# NOTE: The full class definition must be included in the final CODE_ANALYSIS.md.
-# (The model definition is assumed to be fully present in the final file).
+        # Now input is (batch, seq_len, features)
+        x = x.permute(0, 2, 1)    # (batch, features, seq_len) for CNN
+        x = self.cnn(x)
+        x = x.permute(0, 2, 1)    # (batch, seq_len, channels) for LSTM
+        _, (h_n, _) = self.lstm(x)
+        out = self.fc(h_n[-1])
+        return out
 
 model = LeakDetectionModel(
-    input_dim=X_train_tensor.shape[1],
-    window_size=1,
+    input_dim=14,
+    window_size=60,
     cnn_channels=[32, 64],
     lstm_hidden=128,
     lstm_layers=2,
@@ -403,19 +498,23 @@ model = LeakDetectionModel(
     num_classes=2
 )
 
-# Define Loss function, Optimizer, and Training Loop
+print(model)
+
+# Create a dummy tensor with the same batch size as X_train_tensor and shape (batch_size, 1, features)
+x = X_train_tensor
+y = model(x)
+print(y.shape)
+
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-epochs = 5
+
+epochs = 5 # Define the number of training epochs
 
 for epoch in range(epochs):
-    model.train()
-    total_loss = 0
-    # Simplified training loop for demonstration:
     optimizer.zero_grad()
+    # Convert X_train to a PyTorch tensor before passing to the model
     outputs = model(X_train_tensor)
     loss = criterion(outputs, y_train_tensor)
     loss.backward()
     optimizer.step()
-    # In a real scenario, use train_loader and iterate over batches.
 ```
