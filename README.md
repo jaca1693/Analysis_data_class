@@ -43,32 +43,26 @@ O teste ANOVA para as variáveis de pressão e fluxo determinou a significância
 
 A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidenciando o desempenho superior do DTC.
 
-| Modelo de Classificação | Acurácia no Teste | Desvio Residual (Log Loss) | Matriz de Confusão (Classe Minoritária) |
-| :--- | :--- | :--- | :--- |
-| **DTC Otimizado** | **$0.9732$** | N/A | $211$ Falsos Positivos / $358$ Verdadeiros Positivos |
-| **MLPClassifier** | $0.9477$ | N/A | $441$ Falsos Positivos / $94$ Verdadeiros Positivos |
-| **GaussianNB** | $0.8462$ | N/A | $4504$ Falsos Positivos / $385$ Verdadeiros Positivos |
-| **CNN-LSTM (PyTorch)** | N/A (Treinamento Parcial) | Redução de Loss: $0.6693$ $\rightarrow$ $0.6361$ | N/A |
+| Modelo de Classificação | Acurácia no Teste | Falsos Negativos (FN) | Falsos Positivos (FP) | Destaque |
+| :--- | :--- | :--- | :--- | :--- |
+| **DTC Otimizado** | $\mathbf{0.9732}$ | $915$ | $211$ | Maior Acurácia Global |
+| **PyTorch MNN (CNN-LSTM)** | $0.9598$ | **$25$** | $1667$ | **Melhor Deteção de Fugas (Menor FN)** |
+| **MLPClassifier** | $0.9477$ | $2154$ | **$44$** | **Melhor na Prevenção de Alarmes Falsos (Menor FP)** |
+| **GaussianNB** | $0.8462$ | $1963$ | $4504$ | Pior Desempenho devido à violação de pressupostos |
 
-### Destaque: Desempenho do Árvore de Decisão Otimizada
+### Análise Detalhada das Matrizes de Confusão
 
-A poda do DTC foi confirmada como eficaz pelo $\text{GridSearchCV}$, resultando em um **melhor $\text{CV Score}$ de $0.9724$** e um modelo final com **$286$ nós folha**.
-
-**Matriz de Confusão Final (DTC Otimizado):**
-
-| Truth | 0.0 | 1.0 |
-| :--- | :--- | :--- |
-| **Predicted 0.0** | $39564$ | $915$ |
-| **Predicted 1.0** | $211$ | $358$ |
-
-### Destaque: Performance do Naive Bayes
-
-O modelo Naive Bayes resultou no maior número de pontos mal classificados ($6,467$ de $42,048$) e uma baixa Acurácia, o que reforça a conclusão sobre a inadequação do modelo Gaussiano para a distribuição real dos dados.
+| Modelo | Truth 0.0 (TN) | Truth 1.0 (FN) | Predicted 1.0 (FP) | Predicted 1.0 (VP) |
+| :--- | :--- | :--- | :--- | :--- |
+| **PyTorch MNN** | $39675$ | $\mathbf{25}$ | $1667$ | $681$ |
+| **DTC Otimizado** | $39564$ | $915$ | $211$ | $1358$ |
+| **MLPClassifier** | $39656$ | $2154$ | $\mathbf{44}$ | $194$ |
+| **GaussianNB** | $35196$ | $1963$ | $4504$ | $385$ |
 
 ## 6. Conclusões Finais
 
-O **Árvore de Decisão Otimizada** oferece a solução mais confiável e interpretable para a deteção de fugas neste sistema. A sua alta precisão e baixo número de Falsos Positivos ($211$) o tornam ideal para sistemas em que alarmes falsos devem ser minimizados.
+A análise comparativa demonstra a trade-off fundamental na engenharia de Machine Learning:
 
-**Direções Futuras de Pesquisa:**
-1.  Concentrar esforços na otimização e treinamento estendido do modelo CNN-LSTM, explorando técnicas de regularização e *learning rate scheduling*.
-2.  Implementar estratégias de **rebalanceamento de classes** (e.g., *sampling* ou ajuste de pesos na função de perda) para aumentar a sensibilidade do modelo na deteção da classe minoritária (Recall).
+* **Mitigação de Riscos (Segurança):** O **PyTorch MNN** é a solução de escolha se o custo de uma **fuga não detetada (FN)** for o mais alto, pois minimiza esse erro com $FN=25$.
+* **Eficiência Operacional (Alarmes):** O **MLPClassifier** é ideal se o custo de um **alarme falso (FP)** for o mais alto, minimizando a intervenção desnecessária com $FP=44$.
+* **Acurácia Global:** O **DTC Otimizado** oferece a maior acurácia ($0.9732$), servindo como um bom *baseline* interpretável.
