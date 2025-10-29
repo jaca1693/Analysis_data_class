@@ -1,93 +1,80 @@
-# Final Project: Burst Detection and Statistical Analysis in Water Distribution Systems
+# Projeto de Classificação: Avaliação Comparativa de Modelos para Deteção de Fugas
 
-## 1. Project Overview
-This repository contains the final project work for the discipline [**Discipline Name**]. The main objective of this study is two-fold:
-1.  **Statistical Analysis:** Conduct comprehensive exploratory data analysis (EDA) and hypothesis testing (t-tests, ANOVA, non-parametric tests) on sensor data from a Water Distribution System (WDS).
-2.  **Machine Learning Classification:** Implement and evaluate different classification models (Decision Trees, Naive Bayes, and Neural Networks) to predict the occurrence of a **burst** event (leak detection) based on flow and pressure readings.
+## Resumo Executivo
 
----
+Este projeto é um estudo prático de Machine Learning focado na avaliação de diferentes algoritmos de classificação para a **deteção de fugas (classe binária 'burst')** em um conjunto de dados multivariado de sensores industriais. O objetivo principal foi comparar a performance de modelos paramétricos, não-paramétricos e de redes neurais.
 
-## 2. Authors
-* **Mateo H. Sanchez**
-* **Jose A. Calvetty**
-* **Milena R. de Sousa**
+O **Árvore de Decisão Otimizada (DTC Pruned)** destacou-se como o modelo mais eficaz, atingindo uma precisão de aproximadamente **$97.32\%$** no conjunto de teste, com um excelente balanço na identificação da classe minoritária.
 
----
+## Estrutura do Repositório
 
-## 3. Dataset
-The data is a collection of simulated sensor readings (flow meters and pressure sensors) designed for burst detection problems.
-* **Source:** Generated datasets for burst detection in water distribution systems
-* **Link:** [https://github.com/ArieleZanfei/generated-datasets-for-burst-detection-in-water-distribution-systems](https://github.com/ArieleZanfei/generated-datasets-for-burst-detection-in-water-distribution-systems)
-* **Files Used:** The analysis merges the first four CSV files found in the dataset repository.
-
----
-
-## 4. Technical Stack
-The project was developed in a Google Colaboratory environment and utilizes the following tools and libraries:
-
-| Category | Tools/Libraries |
+| Arquivo/Pasta | Descrição |
 | :--- | :--- |
-| **Language** | Python 3.x |
-| **Data Handling** | Pandas, NumPy |
-| **Statistics** | SciPy (`scipy.stats`) |
-| **Visualization** | Matplotlib, Seaborn |
-| **Machine Learning** | Scikit-learn (`sklearn`), ISLP |
-| **Deep Learning** | PyTorch, `torchinfo` |
+| **CODE_ANALYSIS.md** | Documento técnico completo. Contém o código-fonte detalhado, todas as saídas de console, tabelas estatísticas e o registro de treinamento dos modelos. |
+| `media/` | Armazena todas as visualizações (matrizes de correlação, árvores de decisão, heatmaps) incrustadas neste README. |
 
----
+## Metodologia de Análise
 
-## 5. Analysis & Modeling Structure
+O fluxo de trabalho seguiu as seguintes etapas:
 
-The analysis is structured into two main parts within the Jupyter Notebook (`.ipynb` file):
+1.  **Análise e Pré-processamento:** Limpeza, transformação e análise estatística (descritiva, testes paramétricos/não-paramétricos como T-test, ANOVA, Kruskal-Wallis).
+2.  **Engenharia de Features:** Seleção das variáveis de entrada e *split* dos dados em conjuntos de treino e teste.
+3.  **Modelagem Comparativa:** Treinamento e avaliação de quatro técnicas de classificação: Árvore de Decisão, Naive Bayes, MLP (Scikit-learn) e CNN-LSTM (PyTorch).
 
-### 5.1 Exploratory Data Analysis (EDA) and Hypothesis Testing
+## Resultados Chave da Análise de Dados
 
-This section performs a deep dive into the raw sensor data:
-* **Descriptive Statistics:** Calculation of mean, standard deviation, variance, skewness, and kurtosis.
-* **Parametric Tests:** Independent **T-tests** (pairwise) and **ANOVA** (multi-group) to compare means of 'flow\_meter' and 'press' columns.
-* **Non-Parametric Tests:** **Shapiro-Wilk** (Normality) and **Levene's** (Homogeneity of Variance) tests to check assumptions, followed by **Kruskal-Wallis** and **Mann-Whitney U** tests as alternatives.
-* **Correlation:** Visualization of **Pearson** and **Spearman** correlation matrices.
-* **Distribution Analysis:** Histograms with KDE for all features.
+### Estatísticas de Correlação
 
-### 5.2 Machine Learning Classification
+A Matriz de Correlação de Pearson foi crucial para identificar a redundância (multicolinearidade) entre as features, especialmente entre sensores do mesmo tipo (fluxo e pressão), o que impacta a interpretabilidade e a performance de alguns modelos.
 
-This section focuses on classifying the `burst` event (binary target):
-* **Decision Tree:** Implementation of a Decision Tree Classifier (`DTC`) using **entropy**, including visualization, cross-validation, and **Cost-Complexity Pruning (CCP)** to find the optimal tree.
-* **Naive Bayes:** Implementation of the **Gaussian Naive Bayes** classifier, focusing on model parameters ($\mu, \sigma^2$) and performance metrics.
-* **Neural Networks:**
-    * **Scikit-learn MLP Classifier:** A standard Multi-Layer Perceptron implementation.
-    * **PyTorch Custom Model (CNN-LSTM):** Implementation of a complex deep learning model combining **1D Convolutional Layers** (CNN) for feature extraction and **Long Short-Term Memory** (LSTM) for sequence modeling, trained using `CrossEntropyLoss`.
+![Pearson Correlation Matrix](media/correlation_matrix.png)
 
----
+## Avaliação de Desempenho dos Modelos
 
-## 6. Key Findings and Results Summary
+### 1. Árvore de Decisão (DTC)
 
-| Model / Test | Key Statistic / Metric | Result |
+O DTC otimizado através de Poda por Complexidade de Custos ($\text{ccp}\_\alpha$) demonstrou ser o modelo de melhor desempenho e maior interpretabilidade.
+
+| Métrica | Inicial ($\text{max\_depth}=3$) | Sem Poda (Geral) | Otimizado (Podado) |
+| :--- | :--- | :--- | :--- |
+| **Acurácia no Teste** | $0.9488$ | $0.9732$ | **$0.9732$** |
+| **Melhor $\text{CV Score}$** | N/A | N/A | $0.9724$ |
+
+**Matriz de Confusão do DTC Otimizado (Conjunto de Teste):**
+A matriz confirma a robustez do modelo na identificação da classe minoritária (Fuga).
+
+| Truth | 0.0 | 1.0 |
 | :--- | :--- | :--- |
-| **T-tests / ANOVA** | P-values | [Example: All P-values were < 0.05, indicating significant differences between sensor means.] |
-| **Kruskal-Wallis** | P-values | [Example: P-values were 0.0, confirming significant differences in medians.] |
-| **Correlation** | Max Correlation | [Example: Strongest correlation was 0.98 between 'flow\_meter\_1' and 'flow\_meter\_2'.] |
-| **Initial DTC** | Test Accuracy | **[0.XX]** |
-| **Pruned DTC** | Test Accuracy | **[0.YY]** (Best model via CCP) |
-| **Naive Bayes** | Test Accuracy | **[0.ZZ]** |
-| **MLP Classifier (Sklearn)** | Test Accuracy | **[0.WW]** |
-| **CNN-LSTM (PyTorch)** | Final Training Loss | **[X.XXX]** |
+| **Predicted 0.0** | $39564$ | $915$ |
+| **Predicted 1.0** | $211$ | $358$ |
 
-[**IMPORTANT:** Copy and paste your key findings from the final code cell's summary here. For example: "The Pruned Decision Tree achieved the highest accuracy of 95.2% on the test set."]
+![Pruned Decision Tree (Optimized via Cost-Complexity Pruning)](media/pruned_decision_tree.png)
 
----
+### 2. Naive Bayes (GaussianNB)
 
-## 7. How to Run the Code
+O modelo Naive Bayes teve o pior desempenho, sugerindo que as distribuições dos dados violam as suposições de independência ou normalidade do modelo.
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone [Your Repository URL]
-    ```
-2.  **Download the Data:**
-    * The code is set up to read data from local CSV files. You must download the datasets from the source link and ensure the CSV files are present in the directory structure expected by the `glob` search.
-3.  **Open in Colab/Jupyter:**
-    * Upload or open the `[Your_Notebook_Name].ipynb` file in **Google Colaboratory** or **Jupyter Notebook**.
-4.  **Install Dependencies:**
-    * Ensure all `!pip install` commands at the start of the notebook are run.
-5.  **Run All Cells:**
-    * Run the notebook cells sequentially from top to bottom.
+| Métrica | Resultado |
+| :--- | :--- |
+| **Acurácia no Teste** | $0.8462$ |
+| **Pontos Mal Classificados** | $6,467$ de $42,048$ |
+
+### 3. Perceptron Multicamadas (MLPClassifier)
+
+O MLP da Scikit-learn alcançou uma acurácia competitiva, indicando que a capacidade de aprender relações não-lineares é benéfica para o problema.
+
+| Métrica | Resultado |
+| :--- | :--- |
+| **Acurácia no Teste** | $0.9477$ |
+
+### 4. CNN-LSTM (Modelo Customizado PyTorch)
+
+A arquitetura CNN-LSTM foi implementada para explorar a natureza sequencial e as relações locais dos dados dos sensores.
+
+**Arquitetura:**
+```text
+LeakDetectionModel(
+  (cnn): Sequential(...)
+  (lstm): LSTM(64, 128, num_layers=2, ...)
+  (fc): Sequential(...)
+)
