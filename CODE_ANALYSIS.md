@@ -602,6 +602,61 @@ print("Mislabeled points out of a total %d points : %d" % miss_points)
 y_pred_prob = model_gnb.predict_proba(X_test)[:10]
 display(y_pred_prob) # Probability that each observation belongs to a particular class
 ```
+```text
+Model Classes
+array([0., 1.])
+
+Class Prior Probabilities
+array([0.94495067, 0.05504933])
+
+Features Means (Tetha) per Class
+array([[31.3697086 , 32.29337052, 89.14509879, 27.63335931, 32.65293661,
+        32.15777227, 35.9596519 , 39.09689812, 33.68448784, 32.62107014,
+        31.5444562 , 34.93036683, 35.18328489, 31.34177025],
+       [32.89431328, 34.71489613, 95.58552157, 29.04728069, 32.2680711 ,
+        31.75239733, 35.5531459 , 39.08796926, 33.17129328, 32.11832568,
+        31.09384096, 34.55939956, 34.8330598 , 31.02117849]])
+
+Features Variances (Var) per Class
+array([[7.98819732e+01, 1.48629001e+02, 1.73358874e+03, 7.40642574e+01,
+        4.25514088e+00, 3.50720135e+00, 6.21343389e+00, 3.03127244e-03,
+        6.55501787e+00, 6.43455298e+00, 6.21687585e+00, 4.85740952e+00,
+        4.25800433e+00, 2.30102582e+00],
+       [8.79114634e+01, 1.61596918e+02, 1.70560764e+03, 7.88849718e+01,
+        4.88950296e+00, 4.42552871e+00, 7.22171687e+00, 3.39295785e-03,
+        7.59469578e+00, 7.48176732e+00, 7.13227623e+00, 5.47470856e+00,
+        4.82455467e+00, 2.74262179e+00]])
+
+Mean of All Features for Class 0 (Combined)
+37.11530230532053
+Variance of All Features for Class 0 (Combined)
+363.4736277952813
+```
+```text
+Test Accuracy Score (GaussianNB)
+0.8461995814307458
+
+Confusion Matrix (GaussianNB - Test Set)
+Truth      0.0   1.0
+Predicted           
+0.0      35196  1963
+1.0       4504   385
+
+Mislabeled points out of a total 42048 points : 6467
+```
+```text
+Predicted Probabilities (For 10 Samples)
+array([[0.99500111, 0.00499889],
+       [0.72676676, 0.27323324],
+       [0.67442788, 0.32557212],
+       [0.75461496, 0.24538504],
+       [0.99613511, 0.00386489],
+       [0.96932113, 0.03067887],
+       [0.88342094, 0.11657906],
+       [0.41477363, 0.58522637],
+       [0.99583457, 0.00416543],
+       [0.95043178, 0.04956822]])
+```
 ### 3.3 Neural Networks (Scikit-learn MLP Classifier)
 ```python
 # Convert NumPy arrays to PyTorch tensors
@@ -658,6 +713,25 @@ sns.heatmap(confusion_table(y_predict, y_test_tensor.ravel()),
         annot=True,cmap = 'RdYlBu')
 plt.show()
 ```
+```text
+Model Probabilities (First 5 Samples)
+Model Probabilities (first 5):
+[[0.95715929 0.04284071]
+ [0.97037946 0.02962054]
+ [0.9660521  0.0339479 ]
+ [0.96800757 0.03199243] 
+ [0.98005306 0.01994694]]
+
+Model Score and Accuracy
+0.947726407914764
+
+Confusion Matrix (MLPClassifier - Test Set)
+Truth      0.0   1.0
+Predicted           
+0.0      39656  2154
+1.0        441   94
+```
+![Texto Alternativo](images/pruned_decision_tree.png)
 3.4 PyTorch Custom CNN-LSTM Model
 ```python
 # Convert NumPy arrays to PyTorch tensors
