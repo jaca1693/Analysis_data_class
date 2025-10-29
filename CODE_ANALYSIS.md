@@ -822,18 +822,72 @@ x = X_train_tensor
 y = model(x)
 print(y.shape)
 
+# Model, criterion, and optimizer definition
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
-epochs = 5 # Define the number of training epochs
+epochs = 5
+
+# =================================================================
+# TRAINING LOOP (CORRECT WAY - USING DATALOADER)
+# =================================================================
+model.train() # Set model to training mode
+print("\n--- STARTING TRAINING (5 EPOCHS) ---")
 
 for epoch in range(epochs):
-    optimizer.zero_grad()
-    # Convert X_train to a PyTorch tensor before passing to the model
-    outputs = model(X_train_tensor)
-    loss = criterion(outputs, y_train_tensor)
-    loss.backward()
-    optimizer.step()
+    total_loss = 0
+    
+    for X_batch, y_batch in train_loader:
+        optimizer.zero_grad()
+        
+        # Forward Pass
+        outputs = model(X_batch)
+        loss = criterion(outputs, y_batch)
+        
+        # Backward Pass and Optimization
+        loss.backward()
+        optimizer.step()
+        
+        # Accumulate loss weighted by batch size
+        total_loss += loss.item() * X_batch.size(0)
+    
+    # Calculate average loss for the epoch
+    avg_loss = total_loss / len(train_dataset)
+    print(f'Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}') 
+
+
+# =================================================================
+# MODEL EVALUATION (NEW - GETTING ACCURACY AND MATRIX)
+# =================================================================
+model.eval() # Set model to evaluation mode (disables dropout/BatchNorm)
+y_pred_list = []
+y_true_list = []
+
+with torch.no_grad(): # Disable gradient calculation for efficiency
+    for X_batch, y_batch in test_loader:
+        outputs = model(X_batch)
+        _, y_pred = torch.max(outputs, 1) # Get the index of the class with the highest probability
+        y_pred_list.extend(y_pred.cpu().numpy())
+        y_true_list.extend(y_batch.cpu().numpy())
+
+# Convert to NumPy arrays to use Scikit-learn metrics
+y_pred_final = np.array(y_pred_list)
+y_true_final = np.array(y_true_list)
+
+# Import metrics functions
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+accuracy = accuracy_score(y_true_final, y_pred_final)
+cm = confusion_matrix(y_true_final, y_pred_final)
+
+print("\n--- EVALUATION RESULTS (TEST SET) ---")
+print(f"Accuracy: {accuracy}")
+
+# Printing Confusion Matrix in the required output format
+print("Matriz de Confusão:")
+print("Truth 0.0 1.0")
+print(f"Predicted 0.0 {cm[0, 0]} {cm[0, 1]}")
+print(f"Predicted 1.0 {cm[1, 0]} {cm[1, 1]}")
 ```
 ```text
 Model Architecture Summary
@@ -861,9 +915,16 @@ Output Tensor Shape
 torch.Size([98112, 2])
 
 Training Loss per Epoch (5 Epochs)
-Epoch [1/5], Loss: 0.6693
-Epoch [2/5], Loss: 0.6615
-Epoch [3/5], Loss: 0.6535
-Epoch [4/5], Loss: 0.6450
-Epoch [5/5], Loss: 0.6361
+Epoch [1/5], Loss: 0.1539
+Epoch [2/5], Loss: 0.1485
+Epoch [3/5], Loss: 0.1420
+Epoch [4/5], Loss: 0.1390
+Epoch [5/5], Loss: 0.1328
+
+Evaluation Results (Test Set)
+Accuracy: 0.9597602739726028
+Confusion Matrix:
+Truth 0.0 1.0
+Predicted 0.0 39675 25
+Predicted 1.0 1667 681
 ```
