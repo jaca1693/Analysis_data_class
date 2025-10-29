@@ -922,9 +922,12 @@ Epoch [4/5], Loss: 0.1390
 Epoch [5/5], Loss: 0.1328
 
 Evaluation Results (Test Set)
+
 Accuracy: 0.9597602739726028
+
 Confusion Matrix:
-Truth 0.0 1.0
-Predicted 0.0 39675 25
-Predicted 1.0 1667 681
+Truth     0.0 1.0
+Predicted
+0.0       39675 25
+1.0       1667 681
 ```
