@@ -13,7 +13,7 @@ O **Árvore de Decisão Otimizada** demonstrou ser o classificador de melhor des
 | Arquivo/Pasta | Descrição |
 | :--- | :--- |
 | **CODE\_ANALYSIS.md** | **Documento Técnico Principal.** Contém o código-fonte integral de todas as seções do Google Colab, todas as saídas de console e tabelas detalhadas, resultados de testes estatísticos e visualizações. |
-| `images/` | Repositório de arquivos gráficos (PNGs) referenciados unicamente no **CODE\_ANALYSIS.md** (Matriz de Correlação de Spearman, Diagramas de Árvore, Heatmaps). |
+| `images/` | Repositório de arquivos gráficos (PNGs) referenciados no **CODE\_ANALYSIS.md** (Matriz de Correlação de Spearman, Diagramas de Árvore, Heatmaps). |
 
 ## 3. Metodologia de Análise
 
@@ -36,8 +36,8 @@ O teste ANOVA para as variáveis de pressão e fluxo determinou a significância
 
 | Variáveis | F-statistic | P-value |
 | :--- | :--- | :--- |
-| Colunas 'flow\_meter' | [Valor do seu F-statistic] | [Valor do seu P-value] |
-| Colunas 'press' | [Valor do seu F-statistic] | [Valor do seu P-value] |
+| Colunas 'flow\_meter' | [240152.20061594024] | [0.0] |
+| Colunas 'press' | [181474.47539419503] | [0.0] |
 
 ## 5. Avaliação Comparativa de Classificadores (Seção 3)
 
