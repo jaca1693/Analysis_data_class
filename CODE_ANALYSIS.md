@@ -104,7 +104,7 @@ kurtosis = pd.DataFrame(kurtosis.values.reshape(1, -1), columns=df_analy.columns
 df_stats = pd.concat([df_stats, mode, var, std, sem, skew, kurtosis])
 display(df_stats)
 ```
---- Descriptive Statistics Table (Markdown Format) ---
+Descriptive Statistics Table 
 |          |    flow_meter1 |    flow_meter2 |   flow_meter3 |    flow_meter4 |         3_press |        12_press |        36_press |         50_press |        60_press |        84_press |        93_press |       112_press |       138_press |       139_press |
 |:---------|---------------:|---------------:|--------------:|---------------:|----------------:|----------------:|----------------:|-----------------:|----------------:|----------------:|----------------:|----------------:|----------------:|----------------:|
 | count    | 140160         | 140160         | 140160        | 140160         | 140160          | 140160          | 140160          | 140160           | 140160          | 140160          | 140160          | 140160          | 140160          | 140160          |
