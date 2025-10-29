@@ -1,80 +1,74 @@
-# Projeto de Classificação: Avaliação Comparativa de Modelos para Deteção de Fugas
+# Análise Comparativa de Classificadores para Deteção de Fugas em Sistemas de Tubulação
 
-## Resumo Executivo
+## 1. Resumo Executivo
 
-Este projeto é um estudo prático de Machine Learning focado na avaliação de diferentes algoritmos de classificação para a **deteção de fugas (classe binária 'burst')** em um conjunto de dados multivariado de sensores industriais. O objetivo principal foi comparar a performance de modelos paramétricos, não-paramétricos e de redes neurais.
+Este projeto consiste na avaliação comparativa de diferentes técnicas de Machine Learning (ML) aplicadas à classificação de anomalias (fugas binárias, *burst* = 1) em dados multivariados. O principal objetivo é determinar o algoritmo mais adequado, robusto e interpretable para a implementação em sistemas de monitoramento de infraestrutura.
 
-O **Árvore de Decisão Otimizada (DTC Pruned)** destacou-se como o modelo mais eficaz, atingindo uma precisão de aproximadamente **$97.32\%$** no conjunto de teste, com um excelente balanço na identificação da classe minoritária.
+A avaliação rigorosa incluiu um modelo de **Árvore de Decisão Otimizada (DTC)**, **Naive Bayes (GaussianNB)**, **Perceptron Multicamadas (MLP)** e uma **Rede Neural Híbrida CNN-LSTM** customizada em PyTorch.
 
-## Estrutura do Repositório
+O **Árvore de Decisão Otimizada** demonstrou ser o classificador de melhor desempenho, atingindo uma **Acurácia de 0.9732** no conjunto de teste, ao mesmo tempo que mantém alta interpretabilidade das regras de classificação.
+
+## 2. Estrutura do Repositório
 
 | Arquivo/Pasta | Descrição |
 | :--- | :--- |
-| **CODE_ANALYSIS.md** | Documento técnico completo. Contém o código-fonte detalhado, todas as saídas de console, tabelas estatísticas e o registro de treinamento dos modelos. |
-| `media/` | Armazena todas as visualizações (matrizes de correlação, árvores de decisão, heatmaps) incrustadas neste README. |
+| **CODE\_ANALYSIS.md** | **Documento Técnico Principal.** Contém o código-fonte integral de todas as seções do Google Colab, todas as saídas de console e tabelas detalhadas, resultados de testes estatísticos e visualizações. |
+| `images/` | Repositório de arquivos gráficos (PNGs) referenciados unicamente no **CODE\_ANALYSIS.md** (Matriz de Correlação de Spearman, Diagramas de Árvore, Heatmaps). |
 
-## Metodologia de Análise
+## 3. Metodologia de Análise
 
-O fluxo de trabalho seguiu as seguintes etapas:
+O processo analítico seguiu as fases:
+1.  **Análise Estatística:** Avaliação de distribuição, desbalanceamento de classes e correlação (Spearman).
+2.  **Modelagem e Treinamento:** Implementação de quatro classificadores (DTC, GaussianNB, MLP, CNN-LSTM) com treinamento em $70\%$ dos dados.
+3.  **Otimização e Validação:** Ajuste de hiperparâmetros (Poda $\text{ccp}\_\alpha$ no DTC) e validação final da acurácia e da matriz de confusão no conjunto de teste.
 
-1.  **Análise e Pré-processamento:** Limpeza, transformação e análise estatística (descritiva, testes paramétricos/não-paramétricos como T-test, ANOVA, Kruskal-Wallis).
-2.  **Engenharia de Features:** Seleção das variáveis de entrada e *split* dos dados em conjuntos de treino e teste.
-3.  **Modelagem Comparativa:** Treinamento e avaliação de quatro técnicas de classificação: Árvore de Decisão, Naive Bayes, MLP (Scikit-learn) e CNN-LSTM (PyTorch).
+## 4. Resultados Estatísticos Chave
 
-## Resultados Chave da Análise de Dados
+### Matriz de Correlação de Spearman
 
-### Estatísticas de Correlação
+A correlação não-paramétrica de Spearman foi utilizada para avaliar as relações monotônicas entre os pares de variáveis. O resultado confirma a forte correlação entre diversos sensores, o que é um fator de atenção para modelos lineares ou modelos que assumem independência, como o Naive Bayes.
 
-A Matriz de Correlação de Pearson foi crucial para identificar a redundância (multicolinearidade) entre as features, especialmente entre sensores do mesmo tipo (fluxo e pressão), o que impacta a interpretabilidade e a performance de alguns modelos.
+(A matriz de correlação completa e seu *heatmap* estão disponíveis na Seção 2 do **CODE\_ANALYSIS.md**.)
 
-![Pearson Correlation Matrix](media/correlation_matrix.png)
+### Teste ANOVA
 
-## Avaliação de Desempenho dos Modelos
+O teste ANOVA para as variáveis de pressão e fluxo determinou a significância estatística das diferenças entre as médias das colunas, sendo um passo preliminar para a seleção de *features*.
 
-### 1. Árvore de Decisão (DTC)
+| Variáveis | F-statistic | P-value |
+| :--- | :--- | :--- |
+| Colunas 'flow\_meter' | [Valor do seu F-statistic] | [Valor do seu P-value] |
+| Colunas 'press' | [Valor do seu F-statistic] | [Valor do seu P-value] |
 
-O DTC otimizado através de Poda por Complexidade de Custos ($\text{ccp}\_\alpha$) demonstrou ser o modelo de melhor desempenho e maior interpretabilidade.
+## 5. Avaliação Comparativa de Classificadores (Seção 3)
 
-| Métrica | Inicial ($\text{max\_depth}=3$) | Sem Poda (Geral) | Otimizado (Podado) |
+A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidenciando o desempenho superior do DTC.
+
+| Modelo de Classificação | Acurácia no Teste | Desvio Residual (Log Loss) | Matriz de Confusão (Classe Minoritária) |
 | :--- | :--- | :--- | :--- |
-| **Acurácia no Teste** | $0.9488$ | $0.9732$ | **$0.9732$** |
-| **Melhor $\text{CV Score}$** | N/A | N/A | $0.9724$ |
+| **DTC Otimizado** | **$0.9732$** | N/A | $211$ Falsos Positivos / $358$ Verdadeiros Positivos |
+| **MLPClassifier** | $0.9477$ | N/A | $441$ Falsos Positivos / $94$ Verdadeiros Positivos |
+| **GaussianNB** | $0.8462$ | N/A | $4504$ Falsos Positivos / $385$ Verdadeiros Positivos |
+| **CNN-LSTM (PyTorch)** | N/A (Treinamento Parcial) | Redução de Loss: $0.6693$ $\rightarrow$ $0.6361$ | N/A |
 
-**Matriz de Confusão do DTC Otimizado (Conjunto de Teste):**
-A matriz confirma a robustez do modelo na identificação da classe minoritária (Fuga).
+### Destaque: Desempenho do Árvore de Decisão Otimizada
+
+A poda do DTC foi confirmada como eficaz pelo $\text{GridSearchCV}$, resultando em um **melhor $\text{CV Score}$ de $0.9724$** e um modelo final com **$286$ nós folha**.
+
+**Matriz de Confusão Final (DTC Otimizado):**
 
 | Truth | 0.0 | 1.0 |
 | :--- | :--- | :--- |
 | **Predicted 0.0** | $39564$ | $915$ |
 | **Predicted 1.0** | $211$ | $358$ |
 
-![Pruned Decision Tree (Optimized via Cost-Complexity Pruning)](media/pruned_decision_tree.png)
+### Destaque: Performance do Naive Bayes
 
-### 2. Naive Bayes (GaussianNB)
+O modelo Naive Bayes resultou no maior número de pontos mal classificados ($6,467$ de $42,048$) e uma baixa Acurácia, o que reforça a conclusão sobre a inadequação do modelo Gaussiano para a distribuição real dos dados.
 
-O modelo Naive Bayes teve o pior desempenho, sugerindo que as distribuições dos dados violam as suposições de independência ou normalidade do modelo.
+## 6. Conclusões Finais
 
-| Métrica | Resultado |
-| :--- | :--- |
-| **Acurácia no Teste** | $0.8462$ |
-| **Pontos Mal Classificados** | $6,467$ de $42,048$ |
+O **Árvore de Decisão Otimizada** oferece a solução mais confiável e interpretable para a deteção de fugas neste sistema. A sua alta precisão e baixo número de Falsos Positivos ($211$) o tornam ideal para sistemas em que alarmes falsos devem ser minimizados.
 
-### 3. Perceptron Multicamadas (MLPClassifier)
-
-O MLP da Scikit-learn alcançou uma acurácia competitiva, indicando que a capacidade de aprender relações não-lineares é benéfica para o problema.
-
-| Métrica | Resultado |
-| :--- | :--- |
-| **Acurácia no Teste** | $0.9477$ |
-
-### 4. CNN-LSTM (Modelo Customizado PyTorch)
-
-A arquitetura CNN-LSTM foi implementada para explorar a natureza sequencial e as relações locais dos dados dos sensores.
-
-**Arquitetura:**
-```text
-LeakDetectionModel(
-  (cnn): Sequential(...)
-  (lstm): LSTM(64, 128, num_layers=2, ...)
-  (fc): Sequential(...)
-)
+**Direções Futuras de Pesquisa:**
+1.  Concentrar esforços na otimização e treinamento estendido do modelo CNN-LSTM, explorando técnicas de regularização e *learning rate scheduling*.
+2.  Implementar estratégias de **rebalanceamento de classes** (e.g., *sampling* ou ajuste de pesos na função de perda) para aumentar a sensibilidade do modelo na deteção da classe minoritária (Recall).
