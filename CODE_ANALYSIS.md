@@ -495,6 +495,13 @@ confusion = confusion_table(best_.predict(X_test),
                             y_test)
 print(confusion)
 ```
+### Data Shape after Splitting
+(140160, 14)
+(98112,)
+### Initial Test Accuracy
+0.9488441780821918
+### Residual Deviance (Log Loss)
+0.19974997711808481
 ### 3.2 Naive Bayes Classification (Gaussian)
 Implementation and evaluation of the Gaussian Naive Bayes model.
 ```python
