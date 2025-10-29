@@ -732,7 +732,8 @@ Predicted
 1.0        441   94
 ```
 ![Texto Alternativo](images/mlp_confusion_heatmap.png)
-3.4 PyTorch Custom CNN-LSTM Model
+
+### 3.4 PyTorch Custom CNN-LSTM Model
 ```python
 # Convert NumPy arrays to PyTorch tensors
 X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
@@ -833,4 +834,36 @@ for epoch in range(epochs):
     loss = criterion(outputs, y_train_tensor)
     loss.backward()
     optimizer.step()
+```
+```text
+Model Architecture Summary
+LeakDetectionModel(
+  (cnn): Sequential(
+    (0): Conv1d(14, 32, kernel_size=(3,), stride=(1,), padding=(1,))
+    (1): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Dropout(p=0.3, inplace=False)
+    (4): Conv1d(32, 64, kernel_size=(3,), stride=(1,), padding=(1,))
+    (5): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (6): ReLU()
+    (7): Dropout(p=0.3, inplace=False)
+  )
+  (lstm): LSTM(64, 128, num_layers=2, batch_first=True, dropout=0.3)
+  (fc): Sequential(
+    (0): Linear(in_features=128, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.3, inplace=False)
+    (3): Linear(in_features=64, out_features=2, bias=True)
+  )
+)
+
+Output Tensor Shape
+torch.Size([98112, 2])
+
+Training Loss per Epoch (5 Epochs)
+Epoch [1/5], Loss: 0.6693
+Epoch [2/5], Loss: 0.6615
+Epoch [3/5], Loss: 0.6535
+Epoch [4/5], Loss: 0.6450
+Epoch [5/5], Loss: 0.6361
 ```
