@@ -206,6 +206,15 @@ T-test between 112_press and 138_press: TtestResult(statistic=np.float64(-31.398
 T-test between 112_press and 139_press: TtestResult(statistic=np.float64(498.9669160241004), pvalue=np.float64(0.0), df=np.float64(280318.0))
 T-test between 138_press and 139_press: TtestResult(statistic=np.float64(558.2398853795611), pvalue=np.float64(0.0), df=np.float64(280318.0))
 ```
+```text
+ANOVA test for 'flow_meter' columns:
+F-statistic: 240152.20061594024
+P-value: 0.0
+
+ANOVA test for 'press' columns:
+F-statistic: 181474.47539419503
+P-value: 0.0
+```
 ### 2.3 Non-Parametric Tests (Normality, Homogeneity, Kruskal-Wallis)
 Checking the assumptions for parametric tests and using Kruskal-Wallis as an alternative.
 ```python
@@ -241,6 +250,42 @@ print(f"Kruskal-Wallis test for 'flow_meter' columns: Statistic: {kruskal_flow_m
 kruskal_presses = stats.kruskal(*press_groups)
 print(f"Kruskal-Wallis test for 'press' columns: Statistic: {kruskal_presses.statistic}, P-value: {kruskal_presses.pvalue}")
 ```
+```text
+Normality test (Shapiro-Wilk) for 'flow_meter' columns:
+Shapiro-Wilk test for flow_meter1: ShapiroResult(statistic=np.float64(0.9493228975606264), pvalue=np.float64(4.9171084527515064e-101))
+Shapiro-Wilk test for flow_meter2: ShapiroResult(statistic=np.float64(0.9478726513632699), pvalue=np.float64(8.99703303860943e-102))
+Shapiro-Wilk test for flow_meter3: ShapiroResult(statistic=np.float64(0.9404495102073275), pvalue=np.float64(2.7342723606498036e-105))
+Shapiro-Wilk test for flow_meter4: ShapiroResult(statistic=np.float64(0.9487620409763547), pvalue=np.float64(2.5369035572336675e-101))
+
+Normality test (Shapiro-Wilk) for 'press' columns:
+Shapiro-Wilk test for 3_press: ShapiroResult(statistic=np.float64(0.946357893014183), pvalue=np.float64(1.5939649288714802e-102))
+Shapiro-Wilk test for 12_press: ShapiroResult(statistic=np.float64(0.9454502125805722), pvalue=np.float64(5.766148434067288e-103))
+Shapiro-Wilk test for 36_press: ShapiroResult(statistic=np.float64(0.9425084201104278), pvalue=np.float64(2.3568159106545237e-104))
+Shapiro-Wilk test for 50_press: ShapiroResult(statistic=np.float64(0.9418686068432865), pvalue=np.float64(1.1982244630685571e-104))
+Shapiro-Wilk test for 60_press: ShapiroResult(statistic=np.float64(0.9402617296536535), pvalue=np.float64(2.253878248604768e-105))
+Shapiro-Wilk test for 84_press: ShapiroResult(statistic=np.float64(0.9399330371865104), pvalue=np.float64(1.6091743734511091e-105))
+Shapiro-Wilk test for 93_press: ShapiroResult(statistic=np.float64(0.9462561012594131), pvalue=np.float64(1.4211315099164976e-102))
+Shapiro-Wilk test for 112_press: ShapiroResult(statistic=np.float64(0.9402854001259934), pvalue=np.float64(2.3093785778318252e-105))
+Shapiro-Wilk test for 138_press: ShapiroResult(statistic=np.float64(0.9402604235224317), pvalue=np.float64(2.2508554313729875e-105))
+Shapiro-Wilk test for 139_press: ShapiroResult(statistic=np.float64(0.944536100250562), pvalue=np.float64(2.1017266138332891e-103))
+
+Homogeneity of variances test (Levene) for 'flow_meter' columns:
+Levene test for 'flow_meter' columns: LeveneResult(statistic=np.float64(136660.87043572907), pvalue=np.float64(0.0))
+
+Homogeneity of variances test (Levene) for 'press' columns:
+Levene test for 'press' columns: LeveneResult(statistic=np.float64(39350.37973802515), pvalue=np.float64(0.0))
+/usr/local/lib/python3.12/dist-packages/scipy/stats/_axis_nan_policy.py:579: UserWarning: scipy.stats.shapiro: For N > 5000, computed p-value may not be accurate. Current N is 140160.
+  res = hypotest_fun_out(*samples, **kwds)
+```
+```text
+Kruskal-Wallis test for 'flow_meter' columns:
+Kruskal-Wallis statistic: 183729.10612872834
+P-value: 0.0
+
+Kruskal-Wallis test for 'press' columns:
+Kruskal-Wallis statistic: 714818.3031763351
+P-value: 0.0
+```
 ### 2.4 Non-parametric Tests (Mann-Whitney U)
 Using Mann-Whitney U tests for pairwise comparisons when Kruskal-Wallis is significant.
 ```python
@@ -261,6 +306,62 @@ for i in range(len(press_cols)):
         col2 = press_cols[j]
         mannwhitneyu_result = stats.mannwhitneyu(df_analy[col1], df_analy[col2])
         print(f"Mann-Whitney U test between {col1} and {col2}: {mannwhitneyu_result}")
+```
+```text
+Mann-Whitney U tests between pairs of 'flow_meter' columns:
+Mann-Whitney U test between flow_meter1 and flow_meter2: MannwhitneyuResult(statistic=np.float64(9286826115.0), pvalue=np.float64(5.867493672775926e-138))
+Mann-Whitney U test between flow_meter1 and flow_meter3: MannwhitneyuResult(statistic=np.float64(2689480268.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between flow_meter1 and flow_meter4: MannwhitneyuResult(statistic=np.float64(12302332901.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between flow_meter2 and flow_meter3: MannwhitneyuResult(statistic=np.float64(2797445947.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between flow_meter2 and flow_meter4: MannwhitneyuResult(statistic=np.float64(12217371670.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between flow_meter3 and flow_meter4: MannwhitneyuResult(statistic=np.float64(17448646105.0), pvalue=np.float64(0.0))
+
+Mann-Whitney U tests between pairs of 'press' columns:
+Mann-Whitney U test between 3_press and 12_press: MannwhitneyuResult(statistic=np.float64(11440737079.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 3_press and 36_press: MannwhitneyuResult(statistic=np.float64(3160811819.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 3_press and 50_press: MannwhitneyuResult(statistic=np.float64(0.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 3_press and 60_press: MannwhitneyuResult(statistic=np.float64(7280732240.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 3_press and 84_press: MannwhitneyuResult(statistic=np.float64(9466201202.0), pvalue=np.float64(4.350511392349533e-62))
+Mann-Whitney U test between 3_press and 93_press: MannwhitneyuResult(statistic=np.float64(12540905752.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 3_press and 112_press: MannwhitneyuResult(statistic=np.float64(4657881152.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 3_press and 138_press: MannwhitneyuResult(statistic=np.float64(4023256355.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 3_press and 139_press: MannwhitneyuResult(statistic=np.float64(13532269223.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 12_press and 36_press: MannwhitneyuResult(statistic=np.float64(2282433199.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 12_press and 50_press: MannwhitneyuResult(statistic=np.float64(0.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 12_press and 60_press: MannwhitneyuResult(statistic=np.float64(6277447430.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 12_press and 84_press: MannwhitneyuResult(statistic=np.float64(8368813478.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 12_press and 93_press: MannwhitneyuResult(statistic=np.float64(10921125670.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 12_press and 112_press: MannwhitneyuResult(statistic=np.float64(3501198295.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 12_press and 138_press: MannwhitneyuResult(statistic=np.float64(2863681338.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 12_press and 139_press: MannwhitneyuResult(statistic=np.float64(12485608351.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 36_press and 50_press: MannwhitneyuResult(statistic=np.float64(1153984984.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 36_press and 60_press: MannwhitneyuResult(statistic=np.float64(14316349494.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 36_press and 84_press: MannwhitneyuResult(statistic=np.float64(16023508198.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 36_press and 93_press: MannwhitneyuResult(statistic=np.float64(17533257645.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 36_press and 112_press: MannwhitneyuResult(statistic=np.float64(12371959199.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 36_press and 138_press: MannwhitneyuResult(statistic=np.float64(11911220002.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 36_press and 139_press: MannwhitneyuResult(statistic=np.float64(18410570123.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 50_press and 60_press: MannwhitneyuResult(statistic=np.float64(19644825600.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 50_press and 84_press: MannwhitneyuResult(statistic=np.float64(19644825600.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 50_press and 93_press: MannwhitneyuResult(statistic=np.float64(19644825600.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 50_press and 112_press: MannwhitneyuResult(statistic=np.float64(19644825600.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 50_press and 138_press: MannwhitneyuResult(statistic=np.float64(19644825600.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 50_press and 139_press: MannwhitneyuResult(statistic=np.float64(19644825600.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 60_press and 84_press: MannwhitneyuResult(statistic=np.float64(12281445532.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 60_press and 93_press: MannwhitneyuResult(statistic=np.float64(14108920678.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 60_press and 112_press: MannwhitneyuResult(statistic=np.float64(6881723445.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 60_press and 138_press: MannwhitneyuResult(statistic=np.float64(6336216131.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 60_press and 139_press: MannwhitneyuResult(statistic=np.float64(15244915056.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 84_press and 93_press: MannwhitneyuResult(statistic=np.float64(12358277065.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 84_press and 112_press: MannwhitneyuResult(statistic=np.float64(5047167831.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 84_press and 138_press: MannwhitneyuResult(statistic=np.float64(4528643839.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 84_press and 139_press: MannwhitneyuResult(statistic=np.float64(13037704041.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 93_press and 112_press: MannwhitneyuResult(statistic=np.float64(3250786903.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 93_press and 138_press: MannwhitneyuResult(statistic=np.float64(2709445872.5), pvalue=np.float64(0.0))
+Mann-Whitney U test between 93_press and 139_press: MannwhitneyuResult(statistic=np.float64(10612740477.0), pvalue=np.float64(5.94744152632351e-298))
+Mann-Whitney U test between 112_press and 138_press: MannwhitneyuResult(statistic=np.float64(9014115633.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 112_press and 139_press: MannwhitneyuResult(statistic=np.float64(17777067066.0), pvalue=np.float64(0.0))
+Mann-Whitney U test between 138_press and 139_press: MannwhitneyuResult(statistic=np.float64(18242678766.5), pvalue=np.float64(0.0))
 ```
 ### 2.5 Correlation and Distribution Analysis
 Calculating and visualizing the Pearson and Spearman correlation matrices, and the probability distributions.
