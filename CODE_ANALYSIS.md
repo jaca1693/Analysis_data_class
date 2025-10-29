@@ -731,7 +731,7 @@ Predicted
 0.0      39656  2154
 1.0        441   94
 ```
-![Texto Alternativo](images/pruned_decision_tree.png)
+![Texto Alternativo](images/mlp_confusion_heatmap.png)
 3.4 PyTorch Custom CNN-LSTM Model
 ```python
 # Convert NumPy arrays to PyTorch tensors
