@@ -45,10 +45,10 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 
 | Modelo de Classificação | Acurácia no Teste | Falsos Negativos (FN) | Falsos Positivos (FP) | Destaque |
 | :--- | :--- | :--- | :--- | :--- |
-| **DTC Otimizado** | $\mathbf{0.9732}$ | $915$ | $211$ | Maior Acurácia Global |
-| **PyTorch MNN (CNN-LSTM)** | $0.9598$ | **$25$** | $1667$ | **Melhor Deteção de Fugas (Menor FN)** |
-| **MLPClassifier** | $0.9477$ | $2154$ | **$44$** | **Melhor na Prevenção de Alarmes Falsos (Menor FP)** |
-| **GaussianNB** | $0.8462$ | $1963$ | $4504$ | Pior Desempenho devido à violação de pressupostos |
+| **DTC Otimizado** | $\mathbf{0.9555}$ | $45$ | $1827$ | Maior Acurácia Global |
+| **PyTorch MNN (CNN-LSTM)** | $0.9678$ | **$1317$** | $37$ | **Melhor Deteção de Fugas (Menor FN)** |
+| **MLPClassifier** | $0.8529$ | $4260$ | **$1924$** | **Melhor na Prevenção de Alarmes Falsos (Menor FP)** |
+| **GaussianNB** | $0.9656$ | $58$ | $1388$ | Pior Desempenho devido à violação de pressupostos |
 
 ### Análise Detalhada das Matrizes de Confusão
 
