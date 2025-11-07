@@ -626,41 +626,32 @@ Predicted
 1.0         45  452
 ```
 ### 3.2 Naive Bayes Classification (Gaussian)
-Implementation and evaluation of the Gaussian Naive Bayes model.
+Here we create a ´GaussainNB´ classifier that implements the Gaussian Naive Bayes algorithm.
+.fit trains the newly classifier using the training data and their corresponding labels. The model learns the parameters of the Gaussian distributions for each feature within each class. 
 ```python
-model = MS(df_merged.columns.drop(['index','burst']), intercept=False)
-D = model.fit_transform(df_merged) # Process features with ModelSpec
-feature_names = list(D.columns)
-X = np.asarray(D)
-# Data split (random_state=0)
-(X_train,
-X_test,
-y_train,
-y_test) = skm.train_test_split(X,
-df_merged['burst'],
-test_size=0.3,
-random_state=0) # Note: Split uses a different random_state than DTC section
-
 gnb = GaussianNB()
 model_gnb = gnb.fit(X_train, y_train)
 
-# Inspect parameters and make predictions
-display(model_gnb.classes_) # Display classes
+# For showing some characteristics of the classifier.
+display(model_gnb.classes_) #for seeing the classes
 
-display(model_gnb.class_prior_) # Display prior probabilities
+display(model_gnb.class_prior_) #for seeing the prior probabilites stored
 
-display(model_gnb.theta_) # Display feature means (parameters)
-display(model_gnb.var_) # Display feature variances (parameters)
+display(model_gnb.theta_) #parameter of the features
+display(model_gnb.var_) #parameter of the features
 
-display(X_train[y_train == 0].mean(axis=0)) # Mean value for Class 0 features
-display(X_train[y_train == 0].var(ddof=0, axis=0)) # Variance value for Class 0 features
+# For showing the values of the parameters in each attribute.
+display(X_train[y_train == 0].mean()) #for know the value of theta in each attr
+display(X_train[y_train == 0].var(ddof=0)) #for know the value of variance in each attr
 
-y_pred = model_gnb.predict(X_test) # Predicted values
+# Using the model for predicting values and print the values of accuracy, confusion matrix, and the number of mislabeled points.
+y_pred = model_gnb.predict(X_test) #predicted values
 
 print(accuracy_score(y_test,
                      y_pred))
-display(confusion_table(y_pred, y_test)) # Confusion table
-# Print the number of mislabeled points out of a total
+display(confusion_table(y_pred, y_test)) #confussion table
+
+#print the number of mislabeled points out of a total
 miss_points = (X_test.shape[0], (y_test != y_pred).sum())
 print("Mislabeled points out of a total %d points : %d" % miss_points)
 
@@ -668,61 +659,69 @@ y_pred_prob = model_gnb.predict_proba(X_test)[:10]
 display(y_pred_prob) # Probability that each observation belongs to a particular class
 ```
 ```text
-Model Classes
-array([0., 1.])
 
-Class Prior Probabilities
-array([0.94495067, 0.05504933])
+
+
 
 Features Means (Tetha) per Class
-array([[31.3697086 , 32.29337052, 89.14509879, 27.63335931, 32.65293661,
-        32.15777227, 35.9596519 , 39.09689812, 33.68448784, 32.62107014,
-        31.5444562 , 34.93036683, 35.18328489, 31.34177025],
-       [32.89431328, 34.71489613, 95.58552157, 29.04728069, 32.2680711 ,
-        31.75239733, 35.5531459 , 39.08796926, 33.17129328, 32.11832568,
-        31.09384096, 34.55939956, 34.8330598 , 31.02117849]])
+array([0., 1.])
+array([0.94424739, 0.05575261])
+array([[31.41777321, 32.35433502, 89.37671911, 27.67738044, 32.64250801,
+        32.14845015, 35.94668752, 39.09659606, 33.67089768, 32.6074463 ,
+        31.53093826, 34.91806978, 35.17227896, 31.33433346],
+       [32.88619378, 34.70198464, 95.43207971, 29.03543382, 32.26268702,
+        31.73759104, 35.5611234 , 39.08813108, 33.17585941, 32.12583108,
+        31.0982106 , 34.56394369, 34.83978154, 31.02193565]])
 
 Features Variances (Var) per Class
-array([[7.98819732e+01, 1.48629001e+02, 1.73358874e+03, 7.40642574e+01,
-        4.25514088e+00, 3.50720135e+00, 6.21343389e+00, 3.03127244e-03,
-        6.55501787e+00, 6.43455298e+00, 6.21687585e+00, 4.85740952e+00,
-        4.25800433e+00, 2.30102582e+00],
-       [8.79114634e+01, 1.61596918e+02, 1.70560764e+03, 7.88849718e+01,
-        4.88950296e+00, 4.42552871e+00, 7.22171687e+00, 3.39295785e-03,
-        7.59469578e+00, 7.48176732e+00, 7.13227623e+00, 5.47470856e+00,
-        4.82455467e+00, 2.74262179e+00]])
+array([[7.98673996e+01, 1.48309713e+02, 1.73216800e+03, 7.40091555e+01,
+        4.26122500e+00, 3.51129461e+00, 6.22686405e+00, 3.03961468e-03,
+        6.56834615e+00, 6.44870415e+00, 6.22825096e+00, 4.87144114e+00,
+        4.26850968e+00, 2.30324443e+00],
+       [8.79416043e+01, 1.60610280e+02, 1.71379348e+03, 7.86672563e+01,
+        4.91460082e+00, 4.46280875e+00, 7.21851135e+00, 3.38485392e-03,
+        7.58533408e+00, 7.48170790e+00, 7.14775527e+00, 5.47738664e+00,
+        4.80615918e+00, 2.74050384e+00]])
 
 Mean of All Features for Class 0 (Combined)
-37.11530230532053
+37.13531528279367
 Variance of All Features for Class 0 (Combined)
-363.4736277952813
+364.98982381380495
 ```
 ```text
 Test Accuracy Score (GaussianNB)
-0.8461995814307458
+0.8529299847792998
 
 Confusion Matrix (GaussianNB - Test Set)
 Truth      0.0   1.0
 Predicted           
-0.0      35196  1963
-1.0       4504   385
+0.0      35509  1924
+1.0       4260   355
 
-Mislabeled points out of a total 42048 points : 6467
+Mislabeled points out of a total 42048 points : 6184
 ```
 ```text
 Predicted Probabilities (For 10 Samples)
-array([[0.99500111, 0.00499889],
-       [0.72676676, 0.27323324],
-       [0.67442788, 0.32557212],
-       [0.75461496, 0.24538504],
-       [0.99613511, 0.00386489],
-       [0.96932113, 0.03067887],
-       [0.88342094, 0.11657906],
-       [0.41477363, 0.58522637],
-       [0.99583457, 0.00416543],
-       [0.95043178, 0.04956822]])
+array([[0.87674626, 0.12325374],
+       [0.91803406, 0.08196594],
+       [0.98578978, 0.01421022],
+       [0.99552902, 0.00447098],
+       [0.94307491, 0.05692509],
+       [0.93278848, 0.06721152],
+       [0.98943922, 0.01056078],
+       [0.869928  , 0.130072  ],
+       [0.00324177, 0.99675823],
+       [0.65773165, 0.34226835]])
 ```
 ### 3.3 Neural Networks (Scikit-learn MLP Classifier)
+The ´torchinfo´ library is used to get a summary of a ´PyTorch´ model, which is helpful for understanding the model's arquitecture and paremeter count.
+Preparing the data to be used with a neural network model built with PyTorch.
+torch.tensor converts the training features from NumPy array to PyTorch tensor. The .unsqueeze(1) method adds an extra dimension to the tensor, often necessary for compatibility with certain PyTorch loss funcions or model architechtures that expect rhe target to have a specific shape.
+TensorDataset creates a ´TensorDataset´ object, that wraps the features and label tensors together, making it easy to access corresponding samples.
+DataLoader creates a ´DataLoader´ for iterating over datasets in batches. It uses the ´TensorDataset´ object, and the chosen parameters are:
+- batch_size - number of samples to include in each batch
+- shuffle - True for shuffling the data in the training set at the beginning of eaach epoch.
+
 ```python
 # Convert NumPy arrays to PyTorch tensors
 X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
@@ -742,8 +741,21 @@ test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 print("Data prepared for PyTorch model.")
 
 print(X_train_tensor.shape)
+```
+Here we defined and traind a Multi-Layer Perceptron classifier.
+MLPClassifier creates an instance of the Multi-Layer Perceptron classifier. The chosen parameters are:
+- solver - It specifies the optimization algorithm to use for training the neural network. ´sdg´ stands for Stochastic Gradient Descent.
+- learning_rate_init - It sets the initial learning rate for the optimizar.
+- max_iter - It defines the maximum number of epochs, which are the iterarions over the entire training dataset, to train the model.
+- shuffle - ´True´ indicates that the training data will be shuffled at each epoch.
+-tol - It sets the tolerance for the optimization. If the loss does not improve by at least this amount for ´n_iter_no_change´ consecutive epochs, training will stop.
+- hidden_layer_size - It defines the architecture of the hidden layers. In this case, there arte tow hidden lates, each with 100 neurons.
+- batch_size - It defines the size of minibatches for stochastic optimizers. In this case we take the the value of the variable created previusly.
+- alpha - This is the L2 penalty (regularization term) parameter that helps prevent overfitting.
+- random_state - For controling the randomnes.
+MLPmodel.fit trains the ´MLPClassifier´ model using the training data ´X_train_tensor´ and their corresponding labels ´y_train_tensor´. ´MLPClassifier´ is a model form scikit-learn that are designed to work directly with NumPy arrays or pandas DataFrames, and it handles batching and shuffling internally if needed by the specific algorithm. Then that is the reason of using directly the ´X_train_tensor´ and ´y_train_tensor´.
 
-
+```python
 # model
 MLPmodel = MLPClassifier(solver='sgd',
                          learning_rate_init=1e-4,
@@ -752,40 +764,212 @@ MLPmodel = MLPClassifier(solver='sgd',
                          tol = 1e-8,
                          hidden_layer_sizes=(100,100),
                          alpha=1e-4,
-                         random_state=42)
+                         random_state=42,
+                         batch_size = batch_size)
 # training process
-MLPmodel.fit(X_train_tensor,y_train_tensor.ravel()) # Use ravel() to flatten y_train for MLPClassifier
+MLPmodel.fit(X_train_tensor,y_train_tensor)
 
+# Using the model for predicting values
 # prediction
 y_predict = MLPmodel.predict(X_test_tensor)
 
-# print(f'Model Coefficients: {MLPmodel.coefs_}') # Coefficients (commented out in original)
+# Printing the coefficients as biasses of the model. 
+# coeficents
+print(f'Coefficients of model: {MLPmodel.coefs_}')
 
-# print(f'Model Biases: {MLPmodel.intercepts_}') # Biases (commented out in original)
+# bias
+print(f'Biasses of model: {MLPmodel.intercepts_}')
 
+# Printing the probability that an observation is of one class or another.
 # predict probability
 prob = MLPmodel.predict_proba(X_test_tensor)
 
-print(f'Model Probabilities (first 5):\n{prob[:5]}')
+print(f'Model probabilities: {prob}')
 
 print(MLPmodel.score(X_test_tensor,y_test_tensor.ravel()))
 
-print(accuracy_score(y_test_tensor,
-                     y_predict))
-display(confusion_table(y_predict, y_test_tensor.ravel())) # Confusion table
+# Printing the accuracy of the model with the testing dataset and the confusion matrix.
+print(MLPmodel.score(X_test_tensor,y_test_tensor))
+display(confusion_table(y_predict, y_test_tensor)) #confussion table
 
+# Heat map of the confusion matrix.
 sns.heatmap(confusion_table(y_predict, y_test_tensor.ravel()),
         annot=True,cmap = 'RdYlBu')
 plt.show()
 ```
 ```text
-Model Probabilities (First 5 Samples)
-Model Probabilities (first 5):
-[[0.95715929 0.04284071]
- [0.97037946 0.02962054]
- [0.9660521  0.0339479 ]
- [0.96800757 0.03199243] 
- [0.98005306 0.01994694]]
+Coefficients of model: [array([[-0.05755116,  0.20675238,  0.10642063, ..., -0.0332385 ,
+        -0.50697882, -0.17986867],
+       [-0.21494355,  0.0625744 , -0.08515892, ...,  0.18216305,
+         0.22678764,  0.12838495],
+       [ 0.06515298, -0.19076397, -0.15521821, ..., -0.13035903,
+         0.04255732, -0.19021007],
+       ...,
+       [-0.20282711,  0.2151875 ,  0.17605087, ...,  0.21508439,
+         0.12425495, -0.16968743],
+       [ 0.1184709 , -0.21808224, -0.21921224, ..., -0.18139327,
+         0.03878179,  0.09471487],
+       [-0.21487154,  0.20009997, -0.20552044, ..., -0.11527019,
+         0.03213427,  0.09485317]]), array([[ 0.00660854, -0.00720988, -0.16428306, ..., -0.14565851,
+        -0.14349782,  0.13651902],
+       [-0.10671473, -0.06117123, -0.09466632, ..., -0.12635184,
+         0.16038936,  0.01715343],
+       [ 0.16132688, -0.02337782, -0.06517319, ..., -0.14819883,
+        -0.14848546, -0.16897011],
+       ...,
+       [-0.09449569, -0.03822551,  0.03686922, ..., -0.12750499,
+         0.0569169 , -0.09903141],
+       [-0.01481349, -0.07557038,  0.05603506, ...,  0.06510398,
+        -0.06059068,  0.00096387],
+       [-0.12215867, -0.0164282 ,  0.13201901, ..., -0.03511769,
+        -0.07940114,  0.17293333]]), array([[-0.06745511],
+       [ 0.26572456],
+       [ 0.32395956],
+       [ 0.76169798],
+       [-0.05967823],
+       [ 0.16370543],
+       [-0.09452762],
+       [-0.16223875],
+       [-0.2271832 ],
+       [-0.05569595],
+       [ 0.1966746 ],
+       [-0.1551905 ],
+       [-0.21131353],
+       [ 0.23139803],
+       [-0.2314663 ],
+       [ 0.20570382],
+       [-0.12642051],
+       [-0.5458086 ],
+       [ 0.39824101],
+       [-0.17562029],
+       [ 0.01716158],
+       [-0.27836647],
+       [-0.25646506],
+       [-0.22211622],
+       [-0.18735842],
+       [-0.48873319],
+       [ 0.04970381],
+       [ 0.05498068],
+       [-0.18943246],
+       [-0.03984834],
+       [ 0.10486552],
+       [ 0.43502596],
+       [ 0.43900851],
+       [ 0.30258889],
+       [-0.08789452],
+       [-0.05794136],
+       [-0.00237716],
+       [ 0.02151961],
+       [-0.0332143 ],
+       [-0.04807187],
+       [ 0.21019066],
+       [ 0.15598516],
+       [-0.0316874 ],
+       [ 0.13385882],
+       [-0.26251893],
+       [-0.19498429],
+       [-0.07191773],
+       [-0.0783608 ],
+       [-0.31191598],
+       [ 0.30027165],
+       [-0.06862209],
+       [ 0.08557167],
+       [-0.33829086],
+       [-0.2137553 ],
+       [ 0.42508826],
+       [ 0.18466083],
+       [ 0.23613633],
+       [ 0.25142432],
+       [-0.04090184],
+       [ 0.01712159],
+       [ 0.1746448 ],
+       [ 0.41387984],
+       [ 0.02212747],
+       [ 0.14383681],
+       [ 0.23712094],
+       [-0.05612603],
+       [ 0.26565133],
+       [ 0.16217948],
+       [ 0.1928801 ],
+       [-0.45685283],
+       [-0.19740999],
+       [-0.17326475],
+       [-0.23790456],
+       [ 0.70115003],
+       [-0.28941197],
+       [-0.13655459],
+       [-0.25638268],
+       [ 0.23101737],
+       [ 0.06857619],
+       [-0.13730135],
+       [-0.16363209],
+       [-0.1614803 ],
+       [ 0.00886939],
+       [-0.11140499],
+       [ 0.17063137],
+       [ 0.0936503 ],
+       [-0.21204361],
+       [ 0.11173297],
+       [-0.12053173],
+       [ 0.23965116],
+       [-0.23704978],
+       [ 0.03447696],
+       [ 0.09627308],
+       [ 0.990302  ],
+       [-0.27045043],
+       [ 0.090718  ],
+       [-0.05745204],
+       [ 0.20818363],
+       [ 0.20180957],
+       [-0.16634589]])]
+Biasses of model: [array([-0.15277165, -0.15250676, -0.21258973,  0.10759648,  0.07601067,
+       -0.01196149,  0.15772024,  0.13962847,  0.03916327,  0.16897445,
+       -0.13496931, -0.17968335, -0.10646172, -0.20334082,  0.01422758,
+        0.20020836, -0.21136368, -0.1749263 , -0.02227228,  0.19921264,
+       -0.0853761 ,  0.00342888, -0.21039592, -0.16067943,  0.22324962,
+        0.213322  , -0.22659013,  0.20723466,  0.06428301,  0.16881249,
+       -0.02121206,  0.00669926, -0.00511754,  0.07656257, -0.16533934,
+       -0.21655266, -0.08788709,  0.0943346 , -0.13679064,  0.07957626,
+        0.21622779, -0.18821975,  0.08152768, -0.02776337,  0.16891525,
+       -0.14865763,  0.08838285,  0.15429988,  0.20313715,  0.08470349,
+       -0.00111705,  0.0533498 ,  0.1684384 ,  0.02987583, -0.21547319,
+        0.19682093,  0.08685167,  0.0818114 , -0.13045719,  0.07290165,
+       -0.04768428,  0.06957352, -0.1805075 ,  0.07242439,  0.22904087,
+       -0.20717073,  0.21956182, -0.04242598,  0.17011335,  0.12834692,
+        0.03037411,  0.10796035,  0.17363171, -0.04470752, -0.07711446,
+        0.07656454,  0.1414364 ,  0.12053369,  0.13787471, -0.03005661,
+        0.14529566, -0.17456238,  0.020413  , -0.22677348, -0.08114376,
+       -0.06138961, -0.04784617,  0.08968651, -0.05109139, -0.02363529,
+       -0.12042301, -0.05812103, -0.12643192, -0.19583114,  0.04746547,
+        0.0769014 ,  0.05519555, -0.01675008, -0.05517384,  0.16670891]), array([-0.06605414,  0.13428902,  0.06284507, -0.05586647,  0.01508075,
+        0.11874214,  0.13219433, -0.11764301, -0.05577354, -0.05708036,
+       -0.15864034,  0.03376304,  0.12248026, -0.04146709,  0.08311297,
+        0.04447683, -0.04297701, -0.12462208,  0.07270264,  0.12282498,
+        0.06424532, -0.16781697, -0.09915449, -0.14945812,  0.02438246,
+        0.08872037, -0.13499628,  0.11702887,  0.01859444,  0.06580823,
+        0.16372229, -0.14177078,  0.1392992 , -0.12821889, -0.03708016,
+        0.12174194,  0.1407199 ,  0.00195807,  0.03242496,  0.07197436,
+        0.11591742, -0.1312871 ,  0.10741116, -0.00570796, -0.01797457,
+       -0.02633326,  0.00319099,  0.15412794,  0.01567674,  0.15869729,
+       -0.11075075,  0.07849528,  0.10811321,  0.06148675,  0.03786983,
+        0.02282492,  0.12598279,  0.11289698, -0.1305171 ,  0.12019695,
+       -0.0297675 , -0.08516237,  0.12781251, -0.0235473 ,  0.10685554,
+       -0.08252089, -0.17096058, -0.00177841, -0.13839244,  0.08599456,
+       -0.0780967 , -0.01952172, -0.14376662, -0.07181896,  0.09654331,
+       -0.12069372,  0.05071061,  0.14540524,  0.06217764,  0.10774107,
+       -0.1354562 , -0.08698739,  0.13660706,  0.07447553,  0.04748057,
+        0.05671219, -0.0304191 , -0.15777021,  0.09864281,  0.06245146,
+       -0.00940655,  0.13848079, -0.05633233, -0.06760081,  0.12806665,
+        0.1027557 ,  0.00547064, -0.12791724, -0.09862785,  0.05345004]), array([-0.17641879])]
+
+Model Probabilities
+[[0.99259066 0.00740934]
+ [0.99297326 0.00702674]
+ [0.98958867 0.01041133]
+ ...
+ [0.99075256 0.00924744]
+ [0.99456992 0.00543008]
+ [0.98564906 0.01435094]]
 
 Model Score and Accuracy
 0.947726407914764
@@ -793,8 +977,8 @@ Model Score and Accuracy
 Confusion Matrix (MLPClassifier - Test Set)
 Truth      0.0   1.0
 Predicted           
-0.0      39656  2154
-1.0        441   94
+0.0      39711  1388
+1.0         58   891
 ```
 ![Texto Alternativo](images/mlp_confusion_heatmap.png)
 
