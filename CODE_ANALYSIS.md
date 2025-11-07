@@ -405,7 +405,7 @@ for col in df_analy.columns:
 ## 3 Machine Learning Classification Models
 This section implements and evaluates three different classification approaches to predict the burst target variable.
 ### 3.1 Decision Tree Classification (DTC)
-Implementation, evaluation, and pruning of a Decision Tree Classifier.
+Configuring the columns to be used as features. First, .fit defines the columns to be used taking into account that the intercept term will not be added. Second, .transform applies the learned transformation to the dataframe.
 ```python
 # Prepare data for modeling
 model = MS(df_merged.columns.drop(['index','burst']), intercept=False)
@@ -422,7 +422,14 @@ y_test) = skm.train_test_split(X,
                                y,
                                test_size=0.3,
                                random_state=42)
+```
+Choosen parameters to the single decission tree calssifier:
 
+- entropy - for function to measure the quality of a split.
+- max_depth - for determining the maximum depth of the three.
+- random_state - for controling the randomnes of the estimator. 
+
+```python
 # Train the initial classifier (max_depth=3)
 classificador = DTC(criterion='entropy',
                     max_depth=3,
@@ -432,12 +439,19 @@ print(f"X shape: {X.shape}")
 print(f"y_train shape: {y_train.shape}")
 
 classificador.fit(X_train, y_train)
-
-# Evaluation metrics
+```
+Evaluation metrics:
+For showing the accuracy of the classifier
+```python
 print(f"Initial Test Accuracy: {accuracy_score(y_test, classificador.predict(X_test))}")
+```
+For calculating the logarithmic loss (also known as cross-entropy loss) of the decission tree classifier ont he test set. log_loss is a common metric for evaluating the performance of the classification models that output probabilities. The classificador.predict_proba(x_test) part uses the the trained DTC to predict the probability of each class, in this case 0 or 1, for each instance in the test data, returning an array where each row conrresponds to adata point and each column the probability of belonging to a specific class.
+```phyton
 resid_dev = np.sum(log_loss(y_test, classificador.predict_proba(X_test)))
 print(f"Initial Log Loss: {resid_dev}")
-
+```
+Plotting the decission tree classifier.
+```phyton
 # Visualize the initial tree
 plt.figure(figsize=(12,12))
 plot_tree(classificador,
@@ -446,12 +460,19 @@ plot_tree(classificador,
 plt.title("Initial Decision Tree (Max Depth 3)")
 plt.show()
 
-# Print text representation
+# Print text representation of the classifier
 print("\n--- Initial Decision Tree Text Summary ---")
 print(export_text(classificador,
                   feature_names=feature_names,
                   show_weights=True))
-
+```
+Performing corss-validation to evaluate the performance of the classifier on the training data. skm.ShuffleSplit creates a ´ShuffleSplit´ object which is a cross-validation strategy.
+Parameters of ´ShuffleSplit´ object:
+- n_splits - for specifing the number of different training/testing sets that the data will be randomly shuffled and split.
+- test_size - for setting the size of the test set for each split.
+- random_state - for controling the randomnes of the shuffling and splitting.
+skm.cross_validate perfomrs the cross-validation returning a dictionary containing various scores for each split. The default score for a classifier is accuracy
+```python
 # Cross-Validation
 validation = skm.ShuffleSplit(n_splits=4,
                               test_size=100,
@@ -462,10 +483,18 @@ results = skm.cross_validate(classificador,
                              cv=validation)
 print(f"\nCross-Validation Scores: {results['test_score']}")
 
-# Confusion matrix 
+# Creating a confussion matrix for the classifier
 confusion_matrix = confusion_table(classificador.predict(X),df_merged['burst'])
 print(confusion_matrix)
-
+```
+Applying Random Forest
+Here we create a new instance of the decission tree classifier. The chosen parameters are:
+- entropy - for function to measure the quality of a split.
+- random_state - for controling the randomnes of the estimator.
+It is important to mention that in this case the parameter max_depth is not specified here, meaning the tree can grow to its full depth.
+.fit trains the newly classifier using the training data and their corresponding labels, learning the decision rules from this data.
+The accuracy of the model enchanced due to the classifier was trained with a potentially deeper decision tree than the previus one.
+```python
 # Cost-Complexity Pruning (CCP) and Grid Search
 clf = DTC(criterion='entropy', random_state=0)
 ccp_path = classificador.cost_complexity_pruning_path(X_train, y_train)
