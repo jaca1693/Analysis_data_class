@@ -29,17 +29,17 @@ import sklearn.model_selection as skm
 from ISLP import load_data, confusion_table
 from ISLP.models import ModelSpec as MS
 from sklearn.tree import (DecisionTreeClassifier as DTC,
-                          DecisionTreeRegressor as DTR, # Incluida de tu código
+                          DecisionTreeRegressor as DTR, 
                           plot_tree,
                           export_text)
 from sklearn.metrics import (accuracy_score,
                              log_loss)
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import (RandomForestRegressor as RF, # Incluida de tu código
-                              GradientBoostingRegressor as GBR) # Incluida de tu código
-from ISLP.bart import BART # Incluida de tu código
-from sklearn.model_selection import train_test_split # Importación explícita
+from sklearn.ensemble import (RandomForestRegressor as RF, 
+                              GradientBoostingRegressor as GBR) 
+from ISLP.bart import BART 
+from sklearn.model_selection import train_test_split 
 
 # Import PyTorch and Deep Learning utilities
 import torch
