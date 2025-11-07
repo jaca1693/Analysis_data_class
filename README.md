@@ -47,22 +47,22 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 | :--- | :--- | :--- | :--- | :--- |
 | **DTC Otimizado** | $\mathbf{0.9555}$ | $45$ | $1827$ | **Melhor Deteção de Fugas (Menor FN)** |
 | **PyTorch MNN (CNN-LSTM)** | $0.9678$ | **$1317$** | $37$ | Maior Acurácia Global **Melhor na Prevenção de Alarmes Falsos (Menor FP)**  |
-| **MLPClassifier** | $0.8529$ | $4260$ | **$1924$** | Pior Desempenho |
-| **GaussianNB** | $0.9656$ | $58$ | $1388$ |  |
+| **MLPClassifier** | $0.9656$ | $58$ | **$1388$** |  |
+| **GaussianNB** | $0.8529$ | $4260$ | $1924$ | Pior Desempenho |
 
 ### Análise Detalhada das Matrizes de Confusão
 
 | Modelo | Truth 0.0 (TN) | Truth 1.0 (FN) | Predicted 1.0 (FP) | Predicted 1.0 (VP) |
 | :--- | :--- | :--- | :--- | :--- |
-| **PyTorch MNN** | $39675$ | $\mathbf{25}$ | $1667$ | $681$ |
-| **DTC Otimizado** | $39564$ | $915$ | $211$ | $1358$ |
-| **MLPClassifier** | $39656$ | $2154$ | $\mathbf{44}$ | $194$ |
-| **GaussianNB** | $35196$ | $1963$ | $4504$ | $385$ |
+| **PyTorch MNN** | $39732$ | $1317$ | $37$ | $962$ |
+| **DTC Otimizado** | $39724$ | $45$ | $1827$ | $452$ |
+| **MLPClassifier** | $39711$ | $58$ | $1388$ | $891$ |
+| **GaussianNB** | $35509$ | $4260$ | $1924$ | $355$ |
 
 ## 6. Conclusões Finais
 
 A análise comparativa demonstra a trade-off fundamental na engenharia de Machine Learning:
 
-* **Mitigação de Riscos (Segurança):** O **PyTorch MNN** é a solução de escolha se o custo de uma **fuga não detetada (FN)** for o mais alto, pois minimiza esse erro com $FN=25$.
-* **Eficiência Operacional (Alarmes):** O **MLPClassifier** é ideal se o custo de um **alarme falso (FP)** for o mais alto, minimizando a intervenção desnecessária com $FP=44$.
-* **Acurácia Global:** O **DTC Otimizado** oferece a maior acurácia ($0.9732$), servindo como um bom *baseline* interpretável.
+* **Mitigação de Riscos (Segurança):** O **DTC Otimizado** é a solução de escolha se o custo de uma **fuga não detetada (FN)** for o mais alto, pois minimiza esse erro com $FN=45$.
+* **Eficiência Operacional (Alarmes):** O **PyTorch** é ideal se o custo de um **alarme falso (FP)** for o mais alto, minimizando a intervenção desnecessária com $FP=37$.
+* **Acurácia Global:** O **Pytorch** oferece a maior acurácia ($0.9732$), servindo como um bom *baseline* interpretável.
