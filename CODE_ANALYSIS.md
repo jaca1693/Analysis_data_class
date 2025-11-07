@@ -94,14 +94,14 @@ kurtosis = df_analy.kurtosis()
 
 # Format statistics into DataFrames for concatenation
 mode = pd.DataFrame(mode.mode.reshape(1, -1), columns=df_analy.columns, index = ['mode']) # Most frequent value
-var = pd.DataFrame(var.values.reshape(1, -1), columns=df_analy.columns, index = ['variance'])
-std = pd.DataFrame(std.values.reshape(1, -1), columns=df_analy.columns, index = ['std'])
-sem = pd.DataFrame(sem.values.reshape(1, -1), columns=df_analy.columns, index = ['sem'])
-skew = pd.DataFrame(skew.values.reshape(1, -1), columns=df_analy.columns, index = ['skewness'])
+var = pd.DataFrame(var.values.reshape(1, -1), columns=df_analy.columns, index = ['variance']) #Variance
+std = pd.DataFrame(std.values.reshape(1, -1), columns=df_analy.columns, index = ['std']) #Standard deviation
+sem = pd.DataFrame(sem.values.reshape(1, -1), columns=df_analy.columns, index = ['sem']) #Standard error of the mean
+skew = pd.DataFrame(skew.values.reshape(1, -1), columns=df_analy.columns, index = ['skewness']) #Asymmetry of a distribution
 kurtosis = pd.DataFrame(kurtosis.values.reshape(1, -1), columns=df_analy.columns, index = ['kurtosis'])
 
 # Concatenate all statistics into one summary table
-df_stats = pd.concat([df_stats, mode, var, std, sem, skew, kurtosis])
+df_stats = pd.concat([df_stats, mode, var, std, sem, skew, kurtosis]) #Use pd.concat to combine the dataframes
 display(df_stats)
 ```
 Descriptive Statistics Table 
