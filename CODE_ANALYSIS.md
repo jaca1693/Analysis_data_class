@@ -546,8 +546,10 @@ plot_tree(best_,
           ax=ax);
 
 # Final evaluation of the best (pruned) tree
+# Showing the number of leaves
 print(best_.tree_.n_leaves)
 
+#Printing the accuracy score and confusion matrix
 print(accuracy_score(y_test,
                       best_.predict(X_test)))
 confusion = confusion_table(best_.predict(X_test),
@@ -612,16 +614,16 @@ Pruned decision tree
 ![Texto Alternativo](images/pruned_decision_tree.png)
 ```text
 Number of Leaves (Complexity)
-286
+73
 
 Final Test Accuracy (Pruned Tree)
-0.9732210806697108
+0.9554794520547946
 
 Confusion Matrix (Pruned Tree - Test Set)
 Truth      0.0  1.0
 Predicted          
-0.0      39564  915
-1.0        211  358
+0.0      39724  1827
+1.0         45  452
 ```
 ### 3.2 Naive Bayes Classification (Gaussian)
 Implementation and evaluation of the Gaussian Naive Bayes model.
