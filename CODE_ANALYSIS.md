@@ -495,20 +495,50 @@ It is important to mention that in this case the parameter max_depth is not spec
 .fit trains the newly classifier using the training data and their corresponding labels, learning the decision rules from this data.
 The accuracy of the model enchanced due to the classifier was trained with a potentially deeper decision tree than the previus one.
 ```python
-# Cost-Complexity Pruning (CCP) and Grid Search
+# Unpruned decision tree
 clf = DTC(criterion='entropy', random_state=0)
-ccp_path = classificador.cost_complexity_pruning_path(X_train, y_train)
-kfold = skm.KFold(10, random_state=1, shuffle=True)
+clf.fit(X_train, y_train)
+print(accuracy_score(y_test, clf.predict(X_test)))
 
+ax = subplots(figsize=(12,12))[1]
+plot_tree(clf,
+          feature_names=feature_names,
+          ax=ax);
+plt.show()
+```
+Preparing for cost complexity pruning of the decision tree and setting up a cross-validation strategy for selecting the optimal pruning parameter.
+Here the classifier will have a the same parameters of the previous classifier, but with a max_depth equal to 10.
+clf.cost_complexity_pruning_path calculates the ´ccp_alpha´ values, that results in a sequence of pruned trees from the newly classifier. It retunrs two arrays: the effective alphas (´ccp_alpha´) and the total imputirity of the leaves for each alpha (´impurities´). The training data set is used to calculate these paths.
+skm.fold creates a ´KFold´ cross-validation object. The chosen parameters are:
+- 10 - specifies that the training data will be split into 10 folds.
+- random_state - for controling the randomnes of the shuffling and splitting.
+- shuffle - True for shuffling the data before splitting into folds.
+```python
+# Cost-Complexity Pruning (CCP) and Grid Search
+clf = DTC(criterion='entropy', max_depth = 10,random_state=0) 
+ccp_path = clf.cost_complexity_pruning_path(X_train, y_train)
+kfold = skm.KFold(10,
+                  random_state=1,
+                  shuffle=True)
+````
+Using skm.GridSearchCV to find the optimal ´cc_alpha´ value. It creates a ´GridSearchCV´ object that works with multiple parameter combinations for determining which combination gives the best performance. The chosen parameters are:
+-clf - the decision tree classifier
+-ccp_path.ccp_alphas - It defines the grid of hyperpatameters to search over. The only hyperparameter being tune is ´cpp_alpha´, and the values to try are the effective alphas calculated in ´ccp_path´
+- refit - True for refit rhe model using the entire training dataset with the best alpha after finding it.
+- cv - for specifing the cross-validation strategy to use during the grid search. In this case, we used the ´KFold´ object.
+- socring - for specifing the metric used to evaluate the performance of each pruned tree during cross-validation.
+.fit starts the grid search process. ´GridSearchCV´ object iterates through each ´cpp_alpha´ value in the grid, performs the KFold cross validation and keeps track, of which ´ccp_alpha´ results in the highest average accuracy across the folds.
+grid.best_score_ accesses the ´best_score_´ attribute of the fitted ´GridSearchCV´ object, which is the mean cross-validated accuracy of the best performing model found during the grid search. #agregar cambiar en la linea de de codigo de abajo "classificador" por "clf".
+```python
 grid = skm.GridSearchCV(clf,
                         {'ccp_alpha': ccp_path.ccp_alphas},
                         refit=True,
                         cv=kfold,
                         scoring='accuracy')
 grid.fit(X_train, y_train)
-print(grid.best_score_)
+grid.best_score_
 
-# Visualize the Pruned Decision Tree
+# For plotting the best Pruned Decision Tree
 ax = subplots(figsize=(12, 12))[1]
 best_ = grid.best_estimator_
 plot_tree(best_,
@@ -530,10 +560,10 @@ Data Shape after Splitting:
 (98112,)
 
 Initial Test Accuracy:
-0.9488441780821918
+0.9489630898021308
 
 Residual Deviance (Log Loss):
-0.19974997711808481
+0.19813065395600002
 ```
 Initial Desicion Tree Visualization
 ![Texto Alternativo](images/initial_decision_tree.png)
@@ -566,15 +596,19 @@ array([0.93, 0.94, 0.92, 0.92])
 Confusion MAtrix (Full Dataset)
 Truth         0.0   1.0
 Predicted              
-0.0        132406  7250
-1.0             5   499
+0.0        132395  7248
+1.0            16   501
 
 Accuracy Score (clf - Unpruned Tree)
-0.9732448630136986
-
-Best Cross-Validation Score (After Pruning)
-0.9723886884040699
+0.9743388508371386
 ```
+Pruned decision tree
+![Texto Alternativo](images/pruned_decision_tree_ii.png)
+```text
+Best Cross-Validation Score (After Pruning)
+0.9547150614614586
+```
+Pruned decision tree
 ![Texto Alternativo](images/pruned_decision_tree.png)
 ```text
 Number of Leaves (Complexity)
