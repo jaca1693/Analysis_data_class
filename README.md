@@ -1,3 +1,4 @@
+<div style="text-align: justify">
 # Análise Comparativa de Classificadores para Deteção de Fugas em Sistemas de Tubulação
 
 ## 1. Resumo Executivo
@@ -66,3 +67,4 @@ A análise comparativa demonstra a trade-off fundamental na engenharia de Machin
 * **Mitigação de Riscos (Segurança):** O **DTC Otimizado** é a solução de escolha se o custo de uma **fuga não detetada (FN)** for o mais alto, pois minimiza esse erro com $FN=45$.
 * **Eficiência Operacional (Alarmes):** O **PyTorch** é ideal se o custo de um **alarme falso (FP)** for o mais alto, minimizando a intervenção desnecessária com $FP=37$.
 * **Acurácia Global:** O **Pytorch** oferece a maior acurácia ($0.9732$), servindo como um bom *baseline* interpretável.
+</div>
