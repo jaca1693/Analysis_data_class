@@ -605,7 +605,7 @@ Accuracy Score (clf - Unpruned Tree)
 0.9743388508371386
 ```
 Pruned decision tree
-![Texto Alternativo](images/pruned_decision_tree_ii.png)
+![Texto Alternativo](images/unpruned_decision_tree.png)
 ```text
 Best Cross-Validation Score (After Pruning)
 0.9547150614614586
