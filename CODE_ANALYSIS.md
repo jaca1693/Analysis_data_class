@@ -68,7 +68,7 @@ print(csv_files)
 
 # Merge the first four CSV files into a single DataFrame
 df_merged = pd.DataFrame()
-for i in range(4):
+for i in range(1):
     current_df = pd.read_csv(csv_files[i],sep=";")
     df_merged = pd.concat([df_merged, current_df], ignore_index=True)
 ```
