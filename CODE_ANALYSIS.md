@@ -153,67 +153,67 @@ print(f"ANOVA test for 'press' columns: F-statistic: {anova_presses.statistic}, 
 ```
 ```text
 Independent t-tests between pairs of 'flow_meter' columns:
-T-test between flow_meter1 and flow_meter2: TtestResult(statistic=np.float64(-24.07262472891008), pvalue=np.float64(6.532477176455693e-128), df=np.float64(280318.0))
-T-test between flow_meter1 and flow_meter3: TtestResult(statistic=np.float64(-510.12016586640374), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between flow_meter1 and flow_meter4: TtestResult(statistic=np.float64(112.63164267721473), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between flow_meter2 and flow_meter3: TtestResult(statistic=np.float64(-492.2097857928514), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between flow_meter2 and flow_meter4: TtestResult(statistic=np.float64(117.97431020888729), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between flow_meter3 and flow_meter4: TtestResult(statistic=np.float64(543.928746301255), pvalue=np.float64(0.0), df=np.float64(280318.0))
+T-test between flow_meter1 and flow_meter2: TtestResult(statistic=np.float64(-23.989242308107286), pvalue=np.float64(1.1709943396170134e-126), df=np.float64(70078.0))
+T-test between flow_meter1 and flow_meter3: TtestResult(statistic=np.float64(-253.63403700511086), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between flow_meter1 and flow_meter4: TtestResult(statistic=np.float64(45.96884981394347), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between flow_meter2 and flow_meter3: TtestResult(statistic=np.float64(-240.90740358040776), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between flow_meter2 and flow_meter4: TtestResult(statistic=np.float64(62.702449403142325), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between flow_meter3 and flow_meter4: TtestResult(statistic=np.float64(267.3441364378407), pvalue=np.float64(0.0), df=np.float64(70078.0))
 
 Independent t-tests between pairs of 'press' columns:
-T-test between 3_press and 12_press: TtestResult(statistic=np.float64(66.24865369400028), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 3_press and 36_press: TtestResult(statistic=np.float64(-380.4261480169346), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 3_press and 50_press: TtestResult(statistic=np.float64(-1166.7031109605657), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 3_press and 60_press: TtestResult(statistic=np.float64(-115.98736241780686), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 3_press and 84_press: TtestResult(statistic=np.float64(4.356498827275517), pvalue=np.float64(1.3220625473487372e-05), df=np.float64(280318.0))
-T-test between 3_press and 93_press: TtestResult(statistic=np.float64(127.95744315401873), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 3_press and 112_press: TtestResult(statistic=np.float64(-281.0982798225494), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 3_press and 138_press: TtestResult(statistic=np.float64(-323.30498237752863), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 3_press and 139_press: TtestResult(statistic=np.float64(190.0015537761829), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 12_press and 36_press: TtestResult(statistic=np.float64(-453.53577856032075), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 12_press and 50_press: TtestResult(statistic=np.float64(-1379.1325825501578), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 12_press and 60_press: TtestResult(statistic=np.float64(-178.27588012925182), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 12_press and 84_press: TtestResult(statistic=np.float64(-54.030020655292866), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 12_press and 93_press: TtestResult(statistic=np.float64(73.41495591336735), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 12_press and 112_press: TtestResult(statistic=np.float64(-356.8514053233418), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 12_press and 138_press: TtestResult(statistic=np.float64(-404.2875628005277), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 12_press and 139_press: TtestResult(statistic=np.float64(124.94511729352874), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 36_press and 50_press: TtestResult(statistic=np.float64(-471.8649443258594), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 36_press and 60_press: TtestResult(statistic=np.float64(237.68891104587354), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 36_press and 84_press: TtestResult(statistic=np.float64(350.0373132524156), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 36_press and 93_press: TtestResult(statistic=np.float64(466.5986569591143), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 36_press and 112_press: TtestResult(statistic=np.float64(115.04149800700236), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 36_press and 138_press: TtestResult(statistic=np.float64(89.00558856804956), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 36_press and 139_press: TtestResult(statistic=np.float64(588.4028334794855), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 50_press and 60_press: TtestResult(statistic=np.float64(790.9211868798418), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 50_press and 84_press: TtestResult(statistic=np.float64(954.1021093720425), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 50_press and 93_press: TtestResult(statistic=np.float64(1131.5953348711228), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 50_press and 112_press: TtestResult(statistic=np.float64(707.7361522686425), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 50_press and 138_press: TtestResult(statistic=np.float64(709.9844475723189), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 50_press and 139_press: TtestResult(statistic=np.float64(1904.1623761842047), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 60_press and 84_press: TtestResult(statistic=np.float64(109.74421923750175), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 60_press and 93_press: TtestResult(statistic=np.float64(222.56627028063303), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 60_press and 112_press: TtestResult(statistic=np.float64(-138.19954001946604), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 60_press and 138_press: TtestResult(statistic=np.float64(-170.7873463564681), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 60_press and 139_press: TtestResult(statistic=np.float64(291.55588731955174), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 84_press and 93_press: TtestResult(statistic=np.float64(112.38354869593984), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 84_press and 112_press: TtestResult(statistic=np.float64(-256.6824811264855), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 84_press and 138_press: TtestResult(statistic=np.float64(-292.74593075995847), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 84_press and 139_press: TtestResult(statistic=np.float64(159.75510703485566), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 93_press and 112_press: TtestResult(statistic=np.float64(-379.4681629422728), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 93_press and 138_press: TtestResult(statistic=np.float64(-419.45765460856904), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 93_press and 139_press: TtestResult(statistic=np.float64(24.907203537628725), pvalue=np.float64(8.7674111254035e-137), df=np.float64(280318.0))
-T-test between 112_press and 138_press: TtestResult(statistic=np.float64(-31.39831100119615), pvalue=np.float64(5.075241353653009e-216), df=np.float64(280318.0))
-T-test between 112_press and 139_press: TtestResult(statistic=np.float64(498.9669160241004), pvalue=np.float64(0.0), df=np.float64(280318.0))
-T-test between 138_press and 139_press: TtestResult(statistic=np.float64(558.2398853795611), pvalue=np.float64(0.0), df=np.float64(280318.0))
+T-test between 3_press and 12_press: TtestResult(statistic=np.float64(30.561545811193916), pvalue=np.float64(8.741629880035233e-204), df=np.float64(70078.0))
+T-test between 3_press and 36_press: TtestResult(statistic=np.float64(-198.589659003892), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 3_press and 50_press: TtestResult(statistic=np.float64(-598.5022896924818), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 3_press and 60_press: TtestResult(statistic=np.float64(-66.44899118116206), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 3_press and 84_press: TtestResult(statistic=np.float64(-7.79140797071204), pvalue=np.float64(6.717187443553869e-15), df=np.float64(70078.0))
+T-test between 3_press and 93_press: TtestResult(statistic=np.float64(54.8077114364143), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 3_press and 112_press: TtestResult(statistic=np.float64(-155.2466803202297), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 3_press and 138_press: TtestResult(statistic=np.float64(-172.96549568553263), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 3_press and 139_press: TtestResult(statistic=np.float64(85.92548299670725), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 12_press and 36_press: TtestResult(statistic=np.float64(-233.2848484410716), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 12_press and 50_press: TtestResult(statistic=np.float64(-699.1596514901961), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 12_press and 60_press: TtestResult(statistic=np.float64(-95.89369067932893), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 12_press and 84_press: TtestResult(statistic=np.float64(-35.45314928906782), pvalue=np.float64(6.865488773132033e-273), df=np.float64(70078.0))
+T-test between 12_press and 93_press: TtestResult(statistic=np.float64(29.06396784028744), pvalue=np.float64(1.2882903463587585e-184), df=np.float64(70078.0))
+T-test between 12_press and 112_press: TtestResult(statistic=np.float64(-191.71136123272908), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 12_press and 138_press: TtestResult(statistic=np.float64(-211.5557499056104), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 12_press and 139_press: TtestResult(statistic=np.float64(55.56918512740698), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 36_press and 50_press: TtestResult(statistic=np.float64(-244.69408442037025), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 36_press and 60_press: TtestResult(statistic=np.float64(119.49439560714572), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 36_press and 84_press: TtestResult(statistic=np.float64(175.07073669987858), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 36_press and 93_press: TtestResult(statistic=np.float64(234.582450999842), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 36_press and 112_press: TtestResult(statistic=np.float64(53.876963044673595), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 36_press and 138_press: TtestResult(statistic=np.float64(43.10098529573694), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 36_press and 139_press: TtestResult(statistic=np.float64(297.0783683996958), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 50_press and 60_press: TtestResult(statistic=np.float64(404.73071161471745), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 50_press and 84_press: TtestResult(statistic=np.float64(486.9206110546857), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 50_press and 93_press: TtestResult(statistic=np.float64(577.6996169265838), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 50_press and 112_press: TtestResult(statistic=np.float64(362.6611783158141), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 50_press and 138_press: TtestResult(statistic=np.float64(364.6977871200118), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 50_press and 139_press: TtestResult(statistic=np.float64(957.6914851945627), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 60_press and 84_press: TtestResult(statistic=np.float64(54.03282978653538), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 60_press and 93_press: TtestResult(statistic=np.float64(111.63987408452256), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 60_press and 112_press: TtestResult(statistic=np.float64(-74.11787337578322), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 60_press and 138_press: TtestResult(statistic=np.float64(-87.6875041060923), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 60_press and 139_press: TtestResult(statistic=np.float64(148.4458927470904), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 84_press and 93_press: TtestResult(statistic=np.float64(57.5170427901084), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 84_press and 112_press: TtestResult(statistic=np.float64(-133.0188741109686), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 84_press and 138_press: TtestResult(statistic=np.float64(-148.08812077127098), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 84_press and 139_press: TtestResult(statistic=np.float64(84.23589752445744), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 93_press and 112_press: TtestResult(statistic=np.float64(-196.15684065314028), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 93_press and 138_press: TtestResult(statistic=np.float64(-212.92967806225536), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 93_press and 139_press: TtestResult(statistic=np.float64(15.641778063178283), pvalue=np.float64(4.6860104913267954e-55), df=np.float64(70078.0))
+T-test between 112_press and 138_press: TtestResult(statistic=np.float64(-13.027005605550858), pvalue=np.float64(9.530875991496502e-39), df=np.float64(70078.0))
+T-test between 112_press and 139_press: TtestResult(statistic=np.float64(259.95701908907597), pvalue=np.float64(0.0), df=np.float64(70078.0))
+T-test between 138_press and 139_press: TtestResult(statistic=np.float64(284.8182892784834), pvalue=np.float64(0.0), df=np.float64(70078.0))
 ```
 ```text
 ANOVA test for 'flow_meter' columns:
-F-statistic: 240152.20061594024
+F-statistic: 58482.55070340394
 P-value: 0.0
 
 ANOVA test for 'press' columns:
-F-statistic: 181474.47539419503
+F-statistic: 47656.75028190731
 P-value: 0.0
 ```
 ### 2.3 Non-Parametric Tests (Normality, Homogeneity, Kruskal-Wallis)
@@ -253,38 +253,38 @@ print(f"Kruskal-Wallis test for 'press' columns: Statistic: {kruskal_presses.sta
 ```
 ```text
 Normality test (Shapiro-Wilk) for 'flow_meter' columns:
-Shapiro-Wilk test for flow_meter1: ShapiroResult(statistic=np.float64(0.9493228975606264), pvalue=np.float64(4.9171084527515064e-101))
-Shapiro-Wilk test for flow_meter2: ShapiroResult(statistic=np.float64(0.9478726513632699), pvalue=np.float64(8.99703303860943e-102))
-Shapiro-Wilk test for flow_meter3: ShapiroResult(statistic=np.float64(0.9404495102073275), pvalue=np.float64(2.7342723606498036e-105))
-Shapiro-Wilk test for flow_meter4: ShapiroResult(statistic=np.float64(0.9487620409763547), pvalue=np.float64(2.5369035572336675e-101))
+Shapiro-Wilk test for flow_meter1: ShapiroResult(statistic=np.float64(0.9290840779132447), pvalue=np.float64(5.310906643292244e-81))
+Shapiro-Wilk test for flow_meter2: ShapiroResult(statistic=np.float64(0.9255729564190031), pvalue=np.float64(4.150172155418699e-82))
+Shapiro-Wilk test for flow_meter3: ShapiroResult(statistic=np.float64(0.9150530180221393), pvalue=np.float64(3.547779730847022e-85))
+Shapiro-Wilk test for flow_meter4: ShapiroResult(statistic=np.float64(0.928304040166191), pvalue=np.float64(2.9869033356431504e-81))
 
 Normality test (Shapiro-Wilk) for 'press' columns:
-Shapiro-Wilk test for 3_press: ShapiroResult(statistic=np.float64(0.946357893014183), pvalue=np.float64(1.5939649288714802e-102))
-Shapiro-Wilk test for 12_press: ShapiroResult(statistic=np.float64(0.9454502125805722), pvalue=np.float64(5.766148434067288e-103))
-Shapiro-Wilk test for 36_press: ShapiroResult(statistic=np.float64(0.9425084201104278), pvalue=np.float64(2.3568159106545237e-104))
-Shapiro-Wilk test for 50_press: ShapiroResult(statistic=np.float64(0.9418686068432865), pvalue=np.float64(1.1982244630685571e-104))
-Shapiro-Wilk test for 60_press: ShapiroResult(statistic=np.float64(0.9402617296536535), pvalue=np.float64(2.253878248604768e-105))
-Shapiro-Wilk test for 84_press: ShapiroResult(statistic=np.float64(0.9399330371865104), pvalue=np.float64(1.6091743734511091e-105))
-Shapiro-Wilk test for 93_press: ShapiroResult(statistic=np.float64(0.9462561012594131), pvalue=np.float64(1.4211315099164976e-102))
-Shapiro-Wilk test for 112_press: ShapiroResult(statistic=np.float64(0.9402854001259934), pvalue=np.float64(2.3093785778318252e-105))
-Shapiro-Wilk test for 138_press: ShapiroResult(statistic=np.float64(0.9402604235224317), pvalue=np.float64(2.2508554313729875e-105))
-Shapiro-Wilk test for 139_press: ShapiroResult(statistic=np.float64(0.944536100250562), pvalue=np.float64(2.1017266138332891e-103))
+Shapiro-Wilk test for 3_press: ShapiroResult(statistic=np.float64(0.9389875795524175), pvalue=np.float64(1.324492141448592e-77))
+Shapiro-Wilk test for 12_press: ShapiroResult(statistic=np.float64(0.9400594928622569), pvalue=np.float64(3.2917847888771494e-77))
+Shapiro-Wilk test for 36_press: ShapiroResult(statistic=np.float64(0.9365552428719225), pvalue=np.float64(1.76354975177036e-78))
+Shapiro-Wilk test for 50_press: ShapiroResult(statistic=np.float64(0.9365123669177908), pvalue=np.float64(1.7029847734756486e-78))
+Shapiro-Wilk test for 60_press: ShapiroResult(statistic=np.float64(0.9350410901759658), pvalue=np.float64(5.1957239745660875e-79))
+Shapiro-Wilk test for 84_press: ShapiroResult(statistic=np.float64(0.9351691217076247), pvalue=np.float64(5.755890709263658e-79))
+Shapiro-Wilk test for 93_press: ShapiroResult(statistic=np.float64(0.9384795725683155), pvalue=np.float64(8.644361813522865e-78))
+Shapiro-Wilk test for 112_press: ShapiroResult(statistic=np.float64(0.934976940014398), pvalue=np.float64(4.936217675357944e-79))
+Shapiro-Wilk test for 138_press: ShapiroResult(statistic=np.float64(0.9353475164343089), pvalue=np.float64(6.640423930398681e-79))
+Shapiro-Wilk test for 139_press: ShapiroResult(statistic=np.float64(0.9394646252883341), pvalue=np.float64(1.9827745512581185e-77))
 
 Homogeneity of variances test (Levene) for 'flow_meter' columns:
-Levene test for 'flow_meter' columns: LeveneResult(statistic=np.float64(136660.87043572907), pvalue=np.float64(0.0))
+Levene test for 'flow_meter' columns: LeveneResult(statistic=np.float64(28109.645644687767), pvalue=np.float64(0.0))
 
 Homogeneity of variances test (Levene) for 'press' columns:
-Levene test for 'press' columns: LeveneResult(statistic=np.float64(39350.37973802515), pvalue=np.float64(0.0))
-/usr/local/lib/python3.12/dist-packages/scipy/stats/_axis_nan_policy.py:579: UserWarning: scipy.stats.shapiro: For N > 5000, computed p-value may not be accurate. Current N is 140160.
+Levene test for 'press' columns: LeveneResult(statistic=np.float64(9966.67399817068), pvalue=np.float64(0.0))
+/usr/local/lib/python3.12/dist-packages/scipy/stats/_axis_nan_policy.py:579: UserWarning: scipy.stats.shapiro: For N > 5000, computed p-value may not be accurate. Current N is 35040.
   res = hypotest_fun_out(*samples, **kwds)
 ```
 ```text
 Kruskal-Wallis test for 'flow_meter' columns:
-Kruskal-Wallis statistic: 183729.10612872834
+Kruskal-Wallis statistic: 42514.692701154534
 P-value: 0.0
 
 Kruskal-Wallis test for 'press' columns:
-Kruskal-Wallis statistic: 714818.3031763351
+Kruskal-Wallis statistic: 178675.75217785718
 P-value: 0.0
 ```
 ### 2.4 Non-parametric Tests (Mann-Whitney U)
