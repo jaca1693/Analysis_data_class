@@ -390,7 +390,6 @@ for col in df_analy.columns:
     plt.ylabel('Frequency')
     plt.show()
 ```
-![Texto Alternativo](images/Correlation_Matrix_of_DataFrame_Columns.png)
 ![Texto Alternativo](images/spearman_correlation_matrix.png)
 ## Summary:
 
