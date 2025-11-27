@@ -446,12 +446,12 @@ For showing the accuracy of the classifier
 print(f"Initial Test Accuracy: {accuracy_score(y_test, classificador.predict(X_test))}")
 ```
 For calculating the logarithmic loss (also known as cross-entropy loss) of the decission tree classifier ont he test set. log_loss is a common metric for evaluating the performance of the classification models that output probabilities. The classificador.predict_proba(x_test) part uses the the trained DTC to predict the probability of each class, in this case 0 or 1, for each instance in the test data, returning an array where each row conrresponds to adata point and each column the probability of belonging to a specific class.
-```phyton
+```python
 resid_dev = np.sum(log_loss(y_test, classificador.predict_proba(X_test)))
 print(f"Initial Log Loss: {resid_dev}")
 ```
 Plotting the decission tree classifier.
-```phyton
+```python
 # Visualize the initial tree
 plt.figure(figsize=(12,12))
 plot_tree(classificador,
