@@ -39,25 +39,25 @@ O teste ANOVA para as variáveis de pressão e fluxo determinou a significância
 | Colunas 'flow\_meter' | 58482.55070340394 | > 0.001 |
 | Colunas 'press' | 47656.75028190731 | > 0.001 |
 
-## 5. Avaliação Comparativa de Classificadores (Seção 3)
+## 5. Avaliação Comparativa de Classificadores
 
 A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidenciando o desempenho superior do DTC.
 
 | Modelo de Classificação | Acurácia no Teste | Falsos Negativos (FN) | Falsos Positivos (FP) | Destaque |
 | :--- | :--- | :--- | :--- | :--- |
-| **DTC Otimizado** | $\mathbf{0.9555}$ | $45$ | $1827$ | **Melhor Deteção de Fugas (Menor FN)** |
-| **PyTorch MNN (CNN-LSTM)** | $0.9678$ | **$1317$** | $37$ | Maior Acurácia Global **Melhor na Prevenção de Alarmes Falsos (Menor FP)**  |
-| **MLPClassifier** | $0.9656$ | $58$ | **$1388$** |  |
-| **GaussianNB** | $0.8529$ | $4260$ | $1924$ | Pior Desempenho |
+| **DTC Otimizado** | $\mathbf{0.9582}$ | $426$ | $13$ | Maior Acurácia Global |
+| **PyTorch MNN (CNN-LSTM)** | $0.9528$ | **$1$** | $495$ | **Melhor Deteção de Fugas (Menor FN)** |
+| **MLPClassifier** | $0.9513$ | $511$ | **$1$** | **Melhor na Prevenção de Alarmes Falsos (Menor FP)** |
+| **GaussianNB** | $0.8345$ | $495$ | $1244$ | Pior Desempenho |
 
 ### Análise Detalhada das Matrizes de Confusão
 
-| Modelo | Truth 0.0 (TN) | Truth 1.0 (FN) | Predicted 1.0 (FP) | Predicted 1.0 (VP) |
+| Modelo | Truth 0.0 (VN) | Truth 1.0 (FN) | Predicted 1.0 (FP) | Predicted 1.0 (VP) |
 | :--- | :--- | :--- | :--- | :--- |
-| **PyTorch MNN** | $39732$ | $1317$ | $37$ | $962$ |
-| **DTC Otimizado** | $39724$ | $45$ | $1827$ | $452$ |
-| **MLPClassifier** | $39711$ | $58$ | $1388$ | $891$ |
-| **GaussianNB** | $35509$ | $4260$ | $1924$ | $355$ |
+| **PyTorch MNN** | $9905$ | $1$ | $495$ | $111$ |
+| **DTC Otimizado** | $9891$ | $426$ | $13$ | $182$ |
+| **MLPClassifier** | $9905$ | $511$ | $1$ | $95$ |
+| **GaussianNB** | $8662$ | $495$ | $1244$ | $111$ |
 
 ## 6. Conclusões Finais
 
