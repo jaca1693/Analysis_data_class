@@ -36,8 +36,8 @@ O teste ANOVA para as variáveis de pressão e fluxo determinou a significância
 
 | Variáveis | F-statistic | P-value |
 | :--- | :--- | :--- |
-| Colunas 'flow\_meter' | [58482.55070340394] | [> 0.001] |
-| Colunas 'press' | [47656.75028190731] | [> 0.001] |
+| Colunas 'flow\_meter' | 58482.55070340394 | > 0.001 |
+| Colunas 'press' | 47656.75028190731 | > 0.001 |
 
 ## 5. Avaliação Comparativa de Classificadores (Seção 3)
 
