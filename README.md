@@ -63,6 +63,6 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 
 A análise comparativa demonstra a trade-off fundamental na engenharia de Machine Learning:
 
-* **Mitigação de Riscos (Segurança):** O **DTC Otimizado** é a solução de escolha se o custo de uma **fuga não detetada (FN)** for o mais alto, pois minimiza esse erro com $FN=45$.
-* **Eficiência Operacional (Alarmes):** O **PyTorch** é ideal se o custo de um **alarme falso (FP)** for o mais alto, minimizando a intervenção desnecessária com $FP=37$.
-* **Acurácia Global:** O **Pytorch** oferece a maior acurácia ($0.9732$), servindo como um bom *baseline* interpretável.
+* **Mitigação de Riscos (Segurança):** O **Multilayer Neural Networks Pytorch** é a solução de escolha se o custo de uma **fuga não detetada (FN)** for o mais alto, pois minimiza esse erro com $FN=1$.
+* **Eficiência Operacional (Alarmes):** O **Multilayer Perceptron Classifier** é ideal se o custo de um **alarme falso (FP)** for o mais alto, minimizando a intervenção desnecessária com $FP=1$.
+* **Acurácia Global:** O **DTC Otimizado** oferece a maior acurácia ($0.9582$), servindo como um bom *baseline* interpretável.
