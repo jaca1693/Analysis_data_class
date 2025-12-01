@@ -595,7 +595,7 @@ Decision Tree Logic (Text Export)
 Initial Cross-Validation Scores
 array([0.97, 0.95, 0.94, 0.97])
 
-Confusion MAtrix (Full Dataset)
+Confusion Matrix (Full Dataset)
 Truth         0.0   1.0
 Predicted              
 0.0         32906  1847
