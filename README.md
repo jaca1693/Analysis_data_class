@@ -62,7 +62,7 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 | **DTC Otimizado** | $9891$ | $426$ | $13$ | $182$ |
 | **MLP Classifier** | $9905$ | $511$ | $1$ | $95$ |
 | **GaussianNB** | $8662$ | $495$ | $1244$ | $111$ |
-| **UnsuperKNN** | $13367$ | $9681$ | $932$ | $548$ |
+| **UnsuperKNN** | $13367$ | $9681$ | $932$ | 548 |
 | **SVMPoly** | $8789$ | $1115$ | $307$ | $301$ |
 | **SVMNu** | $9899$ | $5$ | $396$ | $212$ |
 | **SVMLinear** | $7666$ | $2238$ | $292$ | $316$ |
