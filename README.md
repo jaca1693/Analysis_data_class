@@ -47,7 +47,7 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 | :--- | :--- | :--- | :--- | :--- |
 | **DTC Otimizado** | $\mathbf{0.9582}$ | $426$ | $13$ | Maior Acurácia Global |
 | **PyTorch MNN (CNN-LSTM)** | $0.9528$ | **$1$** | $495$ | **Melhor Deteção de Fugas (Menor FN)** |
-| **MLPClassifier** | $0.9513$ | $511$ | **$1$** | **Melhor na Prevenção de Alarmes Falsos (Menor FP)** |
+| **MLP Classifier** | $0.9513$ | $511$ | **$1$** | **Melhor na Prevenção de Alarmes Falsos (Menor FP)** |
 | **GaussianNB** | $0.8345$ | $495$ | $1244$ | Pior Desempenho |
 
 ### Análise Detalhada das Matrizes de Confusão
@@ -56,7 +56,7 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 | :--- | :--- | :--- | :--- | :--- |
 | **PyTorch MNN** | $9905$ | $1$ | $495$ | $111$ |
 | **DTC Otimizado** | $9891$ | $426$ | $13$ | $182$ |
-| **MLPClassifier** | $9905$ | $511$ | $1$ | $95$ |
+| **MLP Classifier** | $9905$ | $511$ | $1$ | $95$ |
 | **GaussianNB** | $8662$ | $495$ | $1244$ | $111$ |
 
 ## 6. Conclusões Finais
