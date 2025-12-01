@@ -528,7 +528,7 @@ Using skm.GridSearchCV to find the optimal ´cc_alpha´ value. It creates a ´Gr
 - cv - for specifing the cross-validation strategy to use during the grid search. In this case, we used the ´KFold´ object.
 - socring - for specifing the metric used to evaluate the performance of each pruned tree during cross-validation.
 .fit starts the grid search process. ´GridSearchCV´ object iterates through each ´cpp_alpha´ value in the grid, performs the KFold cross validation and keeps track, of which ´ccp_alpha´ results in the highest average accuracy across the folds.
-grid.best_score_ accesses the ´best_score_´ attribute of the fitted ´GridSearchCV´ object, which is the mean cross-validated accuracy of the best performing model found during the grid search. #agregar cambiar en la linea de de codigo de abajo "classificador" por "clf".
+grid.best_score_ accesses the ´best_score_´ attribute of the fitted ´GridSearchCV´ object, which is the mean cross-validated accuracy of the best performing model found during the grid search.
 ```python
 grid = skm.GridSearchCV(clf,
                         {'ccp_alpha': ccp_path.ccp_alphas},
