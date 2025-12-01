@@ -49,10 +49,10 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 | **PyTorch MNN (CNN-LSTM)** | $0.9528$ | **$1$** | $495$ | **Melhor Deteção de Fugas (Menor FN)** |
 | **MLP Classifier** | $0.9513$ | $511$ | **$1$** | **Melhor na Prevenção de Alarmes Falsos (Menor FP)** |
 | **GaussianNB** | $0.8345$ | $495$ | $1244$ | |
-| UnsuperKNN | $0.5673$ | $9681$ | $932$ | |
-| SVMPoly | $0.8647$ | $1115$ | $307$ | |
-| SVMNu | $0.9619$ | $5$ | $3396$ | Maior Acurácia Global |
-| SVMLinear | $0.7593$ | $2238$ | $292$ | |
+| **UnsuperKNN** | $0.5673$ | $9681$ | $932$ | |
+| **SVMPoly** | $0.8647$ | $1115$ | $307$ | |
+| **SVMNu** | $0.9619$ | $5$ | $396$ | Maior Acurácia Global |
+| **SVMLinear** | $0.7593$ | $2238$ | $292$ | |
 
 ### Análise Detalhada das Matrizes de Confusão
 
@@ -62,10 +62,10 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 | **DTC Otimizado** | $9891$ | $426$ | $13$ | $182$ |
 | **MLP Classifier** | $9905$ | $511$ | $1$ | $95$ |
 | **GaussianNB** | $8662$ | $495$ | $1244$ | $111$ |
-| UnsuperKNN | $13367$ | $9681$ | $932$ | $548$ |
-| SVMPoly | $8789$ | $1115$ | $307$ | $301$ |
-| SVMNu | $9899$ | $5$ | $396$ | $212$ |
-| SVMLinear | $7666$ | $2238$ | $292$ | $316$ |
+| **UnsuperKNN** | $13367$ | $9681$ | $932$ | $548$ |
+| **SVMPoly** | $8789$ | $1115$ | $307$ | $301$ |
+| **SVMNu** | $9899$ | $5$ | $396$ | $212$ |
+| **SVMLinear** | $7666$ | $2238$ | $292$ | $316$ |
 
 ## 6. Conclusões Finais
 
