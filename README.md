@@ -6,7 +6,7 @@ Este projeto consiste na avaliação comparativa de diferentes técnicas de Mach
 
 A avaliação incluiu um modelo de **Árvore de Decisão Otimizada (DTC)**, **Naive Bayes (GaussianNB)**, **Perceptron Multicamadas (MLP)** e uma **Rede Neural Híbrida CNN-LSTM** customizada em PyTorch.
 
-O **Árvore de Decisão Otimizada** demonstrou ser o classificador de melhor desempenho, atingindo uma **acurácia maior** no conjunto de teste, ao mesmo tempo que mantém alta interpretabilidade das regras de classificação.
+A **Máquina de Vetores de Suporte com Nu** demonstrou ser o classificador de melhor desempenho, atingindo uma **acurácia maior** no conjunto de teste.
 
 ## 2. Estrutura do Repositório
 
@@ -45,10 +45,14 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 
 | Modelo de Classificação | Acurácia no Teste | Falsos Negativos (FN) | Falsos Positivos (FP) | Destaque |
 | :--- | :--- | :--- | :--- | :--- |
-| **DTC Otimizado** | $\mathbf{0.9582}$ | $426$ | $13$ | Maior Acurácia Global |
+| **DTC Otimizado** | $\mathbf{0.9582}$ | $426$ | $13$ | |
 | **PyTorch MNN (CNN-LSTM)** | $0.9528$ | **$1$** | $495$ | **Melhor Deteção de Fugas (Menor FN)** |
 | **MLP Classifier** | $0.9513$ | $511$ | **$1$** | **Melhor na Prevenção de Alarmes Falsos (Menor FP)** |
-| **GaussianNB** | $0.8345$ | $495$ | $1244$ | Pior Desempenho |
+| **GaussianNB** | $0.8345$ | $495$ | $1244$ | |
+| UnsuperKNN | $0.5673$ | $9681$ | $932$ | |
+| SVMPoly | $0.8647$ | $1115$ | $307$ | |
+| SVMNu | $0.9619$ | $5$ | $3396$ | Maior Acurácia Global |
+| SVMLinear | $0.7593$ | $2238$ | $292$ | |
 
 ### Análise Detalhada das Matrizes de Confusão
 
@@ -58,6 +62,10 @@ A tabela abaixo resume o desempenho dos modelos no conjunto de teste, evidencian
 | **DTC Otimizado** | $9891$ | $426$ | $13$ | $182$ |
 | **MLP Classifier** | $9905$ | $511$ | $1$ | $95$ |
 | **GaussianNB** | $8662$ | $495$ | $1244$ | $111$ |
+| UnsuperKNN | $13367$ | $9681$ | $932$ | $548$ |
+| SVMPoly | $8789$ | $1115$ | $307$ | $301$ |
+| SVMNu | $9899$ | $5$ | $396$ | $212$ |
+| SVMLinear | $7666$ | $2238$ | $292$ | $316$ |
 
 ## 6. Conclusões Finais
 
@@ -65,4 +73,4 @@ A análise comparativa demonstra a trade-off fundamental na engenharia de Machin
 
 * **Mitigação de Riscos (Segurança):** O **Multilayer Neural Networks Pytorch** é a solução de escolha se o custo de uma **fuga não detetada (FN)** for o mais alto, pois minimiza esse erro com $FN=1$.
 * **Eficiência Operacional (Alarmes):** O **Multilayer Perceptron Classifier** é ideal se o custo de um **alarme falso (FP)** for o mais alto, minimizando a intervenção desnecessária com $FP=1$.
-* **Acurácia Global:** O **DTC Otimizado** oferece a maior acurácia ($0.9582$), servindo como um bom *baseline* interpretável.
+* **Acurácia Global:** O **SVMNu** oferece a maior acurácia ($0.9619$), servindo como um bom *baseline* interpretável.
